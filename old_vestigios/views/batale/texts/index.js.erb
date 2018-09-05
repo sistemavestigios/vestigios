@@ -1,0 +1,31 @@
+$("#pagination-itens").empty();
+
+<% if params[:btn_clear].nil? %>
+  $("#pagination-itens").html("<%= escape_javascript render partial: 'batale/texts/list_texts' %>");
+  $("#paginator").html("<%= escape_javascript(paginate(@batale_texts, remote: true)).to_s %>");
+
+  <% if  params[:page].nil? %>
+  <% if @batale_texts.size > 1 %>
+    $("#text-info").html('Foram encontrados <%=@batale_texts.size%> textos.');
+    notification = document.querySelector('.mdl-snackbar');
+    data = { message: "Foram encontrados <%=@batale_texts.size%> textos.", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+  <% elsif @batale_texts.size == 0 %>
+    $("#text-info").html('Não foram encontrados textos');
+    notification = document.querySelector('.mdl-snackbar');
+    data = { message: "Não foram encontrados textos.", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+  <% else %>
+    $("#text-info").html('Foi encontrado 1 texto');
+    notification = document.querySelector('.mdl-snackbar');
+    data = { message: "Foi encontrado 1 texto.", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+  <% end %>
+  <% end %>
+<% else %>
+  $("#pagination-itens").html("<%= escape_javascript render partial: 'batale/texts/list_card_estratos' %>");
+  $("#paginator").html("<%= escape_javascript(paginate(@estratos, remote: true)).to_s %>");
+<% end %>
+
+componentHandler.upgradeDom(); // para os tooltips reaparecerem
+bind_accordion();

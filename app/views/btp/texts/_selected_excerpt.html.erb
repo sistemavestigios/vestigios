@@ -1,0 +1,24 @@
+<div class="mdl-card mdl-shadow--2dp paper-material">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text"> Trechos selecionados </h2>
+  </div>
+  <div id="selected-text" class="mdl-card__supporting-text">
+    <p>Selecione o trecho no texto acima e clique em "Enviar Seleção"</p>
+    <ul class="mdl-list">
+    </ul>
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <button id="add_to_bloc" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect js-button" disabled>
+      Adicionar a bloco
+    </button>
+    <button id="create_bloc" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect js-button">
+      Criar bloco
+    </button>
+    <button id="associate_color" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect js-button" disabled>
+      Associar a uma cor
+    </button>
+  </div>
+</div>
+<%= render 'btp/texts/dialogs/add_to_bloc' %>
+<%= render 'btp/texts/dialogs/associate_color' %>
+<%= render 'btp/texts/dialogs/create_bloc' %>

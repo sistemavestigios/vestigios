@@ -1,0 +1,3 @@
+var href = window.location.href;
+window.location = href.replace(/btoe\/.*$/, '<%= @file_name %>');
+$("#dwnld-pdf")[0].removeEventListener('click', click_handle);

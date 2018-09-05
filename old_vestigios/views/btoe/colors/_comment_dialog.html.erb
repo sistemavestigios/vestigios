@@ -1,0 +1,53 @@
+<% if editing %>
+<dialog id="dialog-edit-comment" class="mdl-dialog"style="width: 60%;">
+  <h5 class="mdl-dialog__title">Editando comentário</h5>
+<% else %>
+<dialog id="dialog-add-comment" class="mdl-dialog"style="width: 60%;">
+  <h5 class="mdl-dialog__title">Adicionar um comentário</h5>
+<% end %>
+  <div class="mdl-dialog__content">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+      <% if editing %>
+        <textarea class="mdl-textfield__input" type="text" id="comment-edit"></textarea>
+      <% else %>
+        <textarea class="mdl-textfield__input" type="text" id="comment"></textarea>
+        <% end %>
+        <label class="mdl-textfield__label" for="comment">Comentário</label>
+    </div>
+
+  </div>
+  <div class="mdl-dialog__actions">
+    <% if not editing %>
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            onclick="ridiculo();">
+    <% else %>
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            id="btn-save-edited-comment">
+    <% end %>
+      Salvar
+    </button>
+    <% if editing %>
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+     onclick="fechar_dialog('dialog-edit-comment')">
+    <% else %>
+    <button type="button" class="close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+     onclick="fechar_dialog('dialog-add-comment')">
+    <% end %>
+      Cancelar
+    </button>
+  </div>
+</dialog>
+
+<script>
+  register_show_dialog_event('dialog-add-comment', 'add-comment');
+
+  function ridiculo() {
+    ajax({
+      type:'POST',
+      url:'/addCommentToColor',
+      data: { color_id: '<%=@btoe_color.id%>', comment: $('#comment')[0].value },
+      success: "Comentário adicionado com sucesso.",
+      error: "Falha ao criar novo comentário."
+    });
+  }
+</script>

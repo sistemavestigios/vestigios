@@ -1,0 +1,7 @@
+$('#errortogs').html('');
+$('#pagination-items').empty();
+<% if @batale_definitions.empty? %>
+  $('#errortogs').html("<%= escape_javascript render 'list_errortogs', batale_errortogs: @batale_errortogs %>");
+<% else %>
+  $('#pagination-items').html("<%= escape_javascript render 'list_definitions', batale_definitions: @batale_definitions %>");
+<% end %>

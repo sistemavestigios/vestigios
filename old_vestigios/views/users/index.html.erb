@@ -1,0 +1,27 @@
+<h1 align='center'>Listando Usuários</h1>
+<% @users.each do |user|%>
+  <div class="card-text-accordeon mdl-card mdl-shadow--2dp" >
+    <div class="texts-accordeon">
+      <h6 class="accordion">
+        Usuário(a): <%= user.full_name %>
+      </h6>
+      <div class="accordion">
+        <p> Email: <%= user.email %></p>
+        <p> Papéis: <%= user.get_roles %></p>
+        <%= form_for(user) do |f| %>
+          <%= f.fields_for :roles_attributes do |f| %>
+            <%= f.select :id, @roles.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+          <%end%>
+          <%= f.submit "Adicionar Papel",
+                        class: "button_margin mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"%>
+        <% end %>
+        <br>
+      </div>
+    </div>
+  </div>
+<% end %>
+<script>
+  $('select').each(function(index) {
+    this.setAttribute('form', $('form')[index].id);
+  });
+</script>

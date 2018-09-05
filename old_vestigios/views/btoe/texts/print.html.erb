@@ -1,0 +1,14 @@
+<h3><%=@btoe_text.codigo_texto%></h3>
+<div class="white-space-pre"> <%= @btoe_text.colored_text_and_tags[0] %> </div>
+<h4>Legenda:</h4>
+<% @btoe_text.colored_text_and_tags[1].each do |tag, color| %>
+  <p>
+    <svg height='16px' width='16px'>
+      <rect width='16px' height='16px' style="fill:#<%=color%>"/>
+    </svg>
+    <span>&emsp;<%=tag%></span>
+  </p>
+<% end %>
+<script>
+  window.print();
+</script>

@@ -1,0 +1,36 @@
+<% @btp_blocs.each_with_index do |btp_bloc,i| %>
+  <div class="card-text-accordion mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-card--expand"> <strong><%= btp_bloc.name %></strong> </div>
+    <div class="mdl-card__supporting-text">
+      <p><%= btp_bloc.description %></p>
+      <% if btp_bloc.excerpts.count > 0 %>
+        <p><%= 'Este bloco contém ' + pluralize(btp_bloc.excerpts.count, 'trecho associado.', 'trechos associados.')%></p>
+      <% else %>
+        <p>Este bloco ainda não possui nenhum trecho associado.</p>
+      <% end %>
+      <%# TODO: remove if false %>
+      <% if false && @destacados.nil? %>
+        <% if false && @destacados[:trechos].empty? %>
+          <br>
+          <div class="trechos-destacados">
+            <b>Os trechos abaixo possuem o conteúdo buscado:<b>
+            <% @destacados[:trechos][i].each do |t| %>
+              <p> <%= raw t %> </p>
+            <% end %>
+          </div>
+        <% end %>
+        <% if false && @destacados[:comentarios].empty? %>
+          <div class="trechos-destacados">
+            <b>Os comentários abaixo foram encontrados:<b>
+            <% @destacados[:comentarios][i].each do |c| %>
+              <p> <%= raw c %> </p>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="mdl-card__actions mdl-card--border">
+        <%= card_action_icons(btp_bloc, edit_btp_bloc_path(btp_bloc), btp_bloc, 'Deseja realmente deletar este bloco?') %>
+      </div>
+    </div>
+  </div>
+<% end %>

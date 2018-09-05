@@ -1,0 +1,3 @@
+// Só fazer window.location.href = String só da append, tive que fazer do jeito abaixo
+var href = window.location.href
+window.location = href.replace(/batale\/.*$/, '<%= @file_name %>')

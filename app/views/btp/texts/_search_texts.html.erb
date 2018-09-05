@@ -1,0 +1,58 @@
+<%= form_tag btp_texts_path, remote: true, method: :get, id: 'search-form' do %>
+  <div class='paper-material mdl-card mdl-shadow--2dp'>
+    <div class='mdl-card__title'>
+      <h2 class='mdl-card__title-text'>Busca</h2>
+    </div>
+    <div class='mdl-card__supporting-text'>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size'>
+        <%= label_tag :full, 'Busca por conteúdo dos textos', class: 'mdl-textfield__label' %>
+        <%= search_field_tag :full, nil, class: 'mdl-textfield__input' %>
+      </div>
+      <p>
+        Quantidade de textos por página: <%= select_tag 'per_page', options_for_select([5,10,15,20,25], params[:per_page]) %>
+      </p>
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col">
+          <%= label_tag :acronym, Btp::Text.human_attribute_name(:acronym) %>
+          <%= select_tag :acronym, options_for_select(Btp::Text.options(:acronym)), { multiple: true } %>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+          <%= label_tag :year, Btp::Text.human_attribute_name(:year) %>
+          <%= select_tag :year, options_for_select(Btp::Text.options(:year)), { multiple: true } %>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+          <%= label_tag :region, Btp::Text.human_attribute_name(:region) %>
+          <%= select_tag :region, options_for_select(Btp::Text.options(:region)), { multiple: true } %>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+          <%= label_tag :class_number, Btp::Text.human_attribute_name(:class_number) %>
+          <%= select_tag :class_number, options_for_select(Btp::Text.options(:class_number)), { multiple: true } %>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+          <%= label_tag :teacher_number, Btp::Text.human_attribute_name(:teacher_number) %>
+          <%= select_tag :teacher_number, options_for_select(Btp::Text.options(:teacher_number)), { multiple: true } %>
+        </div>
+      </div>
+      <div id='btp_text-search-errors'></div>
+      <% unless @btp_texts.empty? %>
+        <% if @btp_texts.size > 1 %>
+          <div id='text-info'>Foram encontrados <%= @btp_texts.size %> textos.</div>
+        <% else %>
+          <div id='text-info'>Foi encontrado 1 texto</div>
+        <% end %>
+      <% else %>
+        <div id='text-info'></div>
+      <% end %>
+    </div>
+    <div class='mdl-card__actions mdl-card--border'>
+      <%= button_tag 'Buscar', class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= button_tag 'Limpar Busca', class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+            onclick: 'clearFields()', type: 'button' %>
+      <%= link_to 'Análise', btp_analyses_path(controller_name: controller_name), method: :post, class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect disabled' %>
+      <button type='button' class='mdl-button mdl-js-button mdl-button--icon' id='dwnld-tn-pdf' disabled>
+        <i class='material-icons'>picture_as_pdf</i>
+      </button>
+    </div>
+  </div>
+  <div class='mdl-tooltip' data-mdl-for='dwnld-tn-pdf'>Baixar <strong>PDF</strong></div>
+<% end %>

@@ -1,0 +1,28 @@
+<span class="mdl-chip mdl-chip--contact mdl-chip--deletable"
+      onclick=<%= raw("showMarkedColor('#{color.hex_color.gsub("#", "")}')") %>
+      style="cursor: pointer" >
+  <%= content_tag(:span, link_to(color.tag.first.capitalize, btoe_color_path(color), style: "color: #{color.text_color}; text-decoration: none;"),
+                  class: "mdl-chip__contact mdl-color-text--white",
+                  style: "background-color: #{color.hex_color}; color: #{color.text_color} !important",
+                  #onclick: j("showMarkedColor(" + color.hex_color.gsub("#", "") + ")")
+                  onclick: raw("showMarkedColor('#{color.hex_color.gsub("#", "")}')")
+                  ) %>
+
+  <span class="mdl-chip__text">
+    <%= color.tag %>
+  </span>
+  <% if excerpt.nil? %>
+    <button type="button" class="mdl-chip__action" id="<%=color.id.to_s%>"><i class="material-icons">cancel</i></button>
+  <% else %>
+  <%= link_to raw("<i class=\"material-icons\">cancel</i>"),
+              deleteColorExcerpt_path,
+              id: color.id.to_s,
+              class: "mdl-chip__action",
+              style: "color: rgba(0,0,0,.87)",
+              #acho que o "mdl-chip__action" só muda a cor de buttons, num <a> não fica legal
+              remote: true,
+              method: :delete, data: {
+                                  params: { color_id: color.id.to_s, excerpt_id: excerpt.id.to_s },
+                                  confirm: 'Are you sure?' } %>
+  <% end %>
+</span>

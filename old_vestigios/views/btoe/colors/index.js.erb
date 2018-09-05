@@ -1,0 +1,25 @@
+$("#pagination-itens").empty();
+$("#pagination-itens").html("<%= escape_javascript render partial: 'btoe/colors/list_colors' %>");
+$("#paginator").html("<%= escape_javascript(paginate(@btoe_colors, remote: true)).to_s %>");
+
+<% if  params[:page].nil? %>
+<% if @btoe_colors.size > 1 %>
+  $("#colors-info").html('Foram encontradas <%=@btoe_colors.size%> cores.');
+  notification = document.querySelector('.mdl-snackbar');
+  data = { message: "Foram encontradas <%=@btoe_colors.size%> cores.", timeout: 3000};
+  notification.MaterialSnackbar.showSnackbar(data);
+<% elsif @btoe_colors.size == 0 %>
+  $("#colors-info").html('Não foram encontradas cores.');
+  notification = document.querySelector('.mdl-snackbar');
+  data = { message: "Não foram encontradas cores.", timeout: 3000};
+  notification.MaterialSnackbar.showSnackbar(data);
+<% else %>
+  $("#colors-info").html('Foi encontrada 1 cor.');
+  notification = document.querySelector('.mdl-snackbar');
+  data = { message: "Foi encontrada 1 cor.", timeout: 3000};
+  notification.MaterialSnackbar.showSnackbar(data);
+<% end %>
+<% end %>
+
+
+componentHandler.upgradeDom();

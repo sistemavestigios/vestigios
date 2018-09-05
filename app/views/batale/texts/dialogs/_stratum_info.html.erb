@@ -1,0 +1,22 @@
+<dialog id="dialog_stratum_<%="#{stratum.stratum_number}"%>" class="mdl-dialog" style="width: 60%;">
+  <h5 class="mdl-dialog__title">Informações do Estrato <%= stratum.stratum_number %></h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--6-col">
+        <p><strong>Ano: </strong><%= stratum.collection_year %></p>
+        <p><strong>Material Coletado: </strong><%= stratum.collected_material %></p>
+        <p><strong>Tipo de Coleta: </strong><%= stratum.collection_type %></p>
+        <p><strong>Série/Ano: </strong><%= stratum.collection_grades %></p>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col">
+        <p><strong>Local da coleta: </strong><%= stratum.region %></p>
+        <p><strong>Escola: </strong><%= stratum.schools %></p>
+        <p><strong>Número de textos: </strong><%= stratum.quantity %></p>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button close">Ok</button>
+    <%= button_to("Editar informações", edit_batale_stratum_path(stratum), method: "get", class: "mdl-button") %>
+  </div>
+</dialog>

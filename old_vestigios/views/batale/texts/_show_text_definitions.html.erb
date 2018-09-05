@@ -1,0 +1,189 @@
+<div class="paper-material mdl-card mdl-shadow--2dp" >
+  <div class="card-text-title mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Erros associados
+    </h2>
+  </div>
+  <div id="definitions-card">
+      <% if @batale_text.definitions? %>
+      <div  class="text-definitions mdl-card__supporting-text">
+        <% @batale_text.definitions.each_with_index do |definition, i|%>
+        <% palavras_erradas = definition.filtered_words(@batale_text.id)%>
+        <% tags_ids = definition.tags_ids(@batale_text.id)%>
+          <span class="mdl-chip mdl-chip--contact mdl-chip--deletable">
+            <span class="mdl-chip__contact mdl-color--<%=definition.get_color_and_initial[:color]%> mdl-color-text--white" id='tte-<%=i%>'
+                  onclick="window.location.href = '/batale/definitions/<%=definition.id%>'">
+                  <%= definition.get_color_and_initial[:initial] %>
+            </span>
+            <span class="mdl-chip__text" id='tth-<%=i%>' onclick="highlightWords(<%=tags_ids%>)"><%= definition.regra %></span>
+            <% if palavras_erradas.count > 1 %>
+              <button type="button" class="mdl-chip__action" id="ttd-<%=i%>" onclick="$('#dialog-palavras-<%=definition.id%>')[0].showModal()">
+                <i class="material-icons">cancel</i></button>
+            <% else %>
+              <button type="button" class="mdl-chip__action" id="ttd-<%=i%>"
+                onclick="deleteAssociation('<%=definition.id%>')">
+                <i class="material-icons">cancel</i></button>
+            <% end %>
+            <%= dialog_palavras palavras_erradas, definition.id  %>
+          </span>
+        <% end %>
+      <% else%>
+      <div  class="text-definitions mdl-card__supporting-text white-space-pre">
+        Este texto ainda não possui erros associados.
+      <% end %>
+    </div>
+  </div>
+  <div class=" mdl-card__actions mdl-card--border">
+    <button class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" id='new_definition_bttn'>Criar nova definição</button>
+  </div>
+</div>
+<% @batale_text.definitions.each_with_index do |definition, i|%>
+  <!-- Cria os tooltips referentes aos campos do chip -->
+  <div for="tte-<%=i%>" class="mdl-tooltip mdl-tooltip--large"><%= definition.parents_names %></div>
+  <div for="tth-<%=i%>" class="mdl-tooltip mdl-tooltip--large">Mostrar erro no texto</div>
+  <div for="ttd-<%=i%>" class="mdl-tooltip mdl-tooltip--large">Deletar associação</div>
+<% end %>
+
+<script>
+
+function unmarkWord(tag_id) {
+  console.log($(tag_id)[0]);
+  mark = $(tag_id)[0];
+  b = document.createElement('b');
+  b.id = mark.id;
+  b.innerHTML = mark.innerHTML;
+  mark.parentNode.insertBefore(b, mark);
+  mark.parentNode.removeChild(mark);
+  sibling = b.nextElementSibling;
+  b.innerHTML += sibling.innerHTML;
+  b.parentNode.removeChild(sibling);
+}
+
+function unmarkWords(tag_id) {
+  mark = $(tag_id)[0];
+  word_ids = tag_id.split(/#word_index_/)[1].split(/_/);
+  if(mark.innerHTML.indexOf('<br>') == -1) {// sem quebra de linha]
+    words = mark.innerHTML.split(/\s/);
+    word_ids.forEach(function(id, i) {
+      b = document.createElement('b');
+      b.id = "word_index_"+id;
+      b.innerHTML = words[i] + ' ';
+      mark.parentNode.insertBefore(b, mark);
+    });
+    sibling = mark.nextElementSibling;
+    mark.parentNode.removeChild(sibling);
+    mark.parentNode.removeChild(mark);
+  } else {
+    before_br = mark.innerHTML.split('<br>')[0];
+    after_br = mark.innerHTML.split('<br>')[1];
+    if (before_br.split(/\s/).length == 1) {
+      first_id = word_ids[0];
+      word_ids = word_ids.slice(1);
+      b = document.createElement('b');
+      b.id = "word_index_"+first_id;
+      b.innerHTML = before_br + ' ';
+      mark.parentNode.insertBefore(b, mark);
+      mark.parentNode.insertBefore(document.createElement('br'), mark);
+    } else {
+      // TODO:
+    }
+    words = after_br.split(/\s/);
+    word_ids.forEach(function(id, i) {
+      b = document.createElement('b');
+      b.id = "word_index_"+id;
+      b.innerHTML = words[i] + ' ';
+      mark.parentNode.insertBefore(b, mark);
+    });
+    mark.parentNode.removeChild(mark);
+  }
+}
+
+function deleteAssociation(id_def) {
+  if (confirm("Tem certeza que deseja deletar essa associação?")) {
+    unmark_tag_id = Object.values($('[id^='+id_def+'-]'))[0].id.split(/-/)[1];
+    if(unmark_tag_id.split(/word_index_/)[1].split(/_/).length > 1) {
+      unmarkWords("#"+unmark_tag_id);
+    } else {
+      unmarkWord("#"+unmark_tag_id);
+    }
+    ajax({
+      type:'DELETE',
+      url:'/deleteAssociation',
+      data: { id: '<%= @batale_text.id %>', id_def: id_def, texto_highlighted: $("#texto-original")[0].innerHTML },
+      success: "Associação deletada com sucesso",
+      error: "Algum erro previniu essa associação de ser deletada"
+    });
+  }
+}
+
+function desassociarPalavras(id_def) {
+  delete_words = [];
+  Object.values($('[id^='+id_def+'-]')).forEach(function(word) {
+    if(word.checked) {
+      delete_word_id = word.id.split(/-/)[1]
+      delete_words.push(delete_word_id);
+      if(delete_word_id.split(/word_index_/)[1].split(/_/).length > 1) {
+        unmarkWords("#"+delete_word_id);
+      } else {
+        unmarkWord("#"+delete_word_id);
+      }
+    }
+  });
+  fechar_dialog('dialog-palavras-'+id_def);
+  if (confirm("Tem certeza que deseja deletar essa associação?")) {
+    ajax({
+      type:'DELETE',
+      url:'/deleteAssociation',
+      data: { id: '<%= @batale_text.id %>', id_def: id_def, palavras: delete_words, texto_highlighted: $("#texto-original")[0].innerHTML },
+      success: "Palavra(s) desassociada(s) com sucesso",
+      error: "Algum erro previniu a(s) palavra(s) de ser(em) desassociada(s)"
+    });
+  }
+}
+
+function highlightWords(tags_ids) {
+  tags = Object.values($('[id^="word_index_"]'));
+  tags_ids.forEach(function(id) {
+    tags.forEach(function(tag) {
+      if(id == tag.id) {
+        $("#"+tag.id)[0].hasAttribute('style')
+        ? $("#"+tag.id)[0].removeAttribute('style')
+        : $("#"+tag.id)[0].setAttribute('style', 'background-color: #fffc51');
+      }
+    });
+  })
+}
+
+function createDefinition() {
+  fechar_dialog('dialog_new_definition');
+  ajax({
+    type: 'POST',
+    url: '/createDefinition',
+    data: {
+      errortog_id: $('#select_categoria').val(),
+      regra: $('#Regra')[0].value,
+      exemplo: $('#Exemplo')[0].value,
+      palavra_alvo: $('#Palavra_alvo')[0].value
+    },
+    success: 'Regra criada com sucesso',
+    error: 'Algum erro previniu essa regra de ser criada'
+  });
+}
+
+function clearDialog() {
+  fechar_dialog('dialog_new_definition');
+  $('#Regra')[0].value = '';
+  $('#Exemplo')[0].value = '';
+  $('#Palavra_alvo')[0].value = '';
+}
+
+$('input').each(function() {
+  this.addEventListener('input', enableDisableButton);
+})
+
+function enableDisableButton(){
+  ($('#Palavra_alvo')[0].value != '' && $('#Exemplo')[0].value != '' && $('#Regra')[0].value != '')
+   ? $('#dialog_definition_bttn')[0].disabled = false
+   : $('#dialog_definition_bttn')[0].disabled = true
+}
+</script>

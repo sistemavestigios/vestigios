@@ -1,0 +1,38 @@
+<div class="mdl-card mdl-shadow--2dp paper-material">
+  <div class="mdl-card__title">
+    <h2 id="cores-associadas-title" class="mdl-card__title-text">
+      Cores associadas por você
+    </h2>
+  </div>
+  <div id="colors-card" class="mdl-card__supporting-text">
+    <% if @associated_colors.present? %>
+      <% @associated_colors.each do |color| %>
+        <%= render 'color_chip', color: color %>
+      <% end %>
+    <% else %>
+      <p> Você ainda não associou nenhuma cor ao texto.</p>
+      <br><br>
+    <% end %>
+    <%# if not @color_chips[:user].empty? %>
+      <%# @color_chips[:user].each do |k, v| %>
+        <%# if v.count == 1 %>
+          <%#= render "color_chip", color: k, excerpt: v[0] %>
+        <%# else %>
+          <%#= render "color_chip", color: k, excerpt: nil %>
+          <%#= dialog_desassociar_cores @color_chips[:user][k], k.id.to_s %>
+        <%# end %>
+      <%# end %>
+    <%# else %>
+    <%# end %>
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <button id="create_color" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect js-button">
+      Criar Nova Cor
+    </button>
+    <button id="switch-associations-button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        onclick="switchAssociations();">
+      Ver todas associações
+    </button>
+  </div>
+</div>
+<%= render 'btp/texts/dialogs/create_color' %>

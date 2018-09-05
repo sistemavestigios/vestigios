@@ -1,0 +1,31 @@
+<%= render 'shared/error_messages', obj: btp_bloc %>
+<div class='paper-material mdl-card mdl-shadow--2dp'>
+  <div class='mdl-card__title'>
+    <h2 class='mdl-card__title-text'>
+      <% if btp_bloc.new_record? %>
+        Nova <%= btp_bloc.model_name.human %>
+      <% else %>
+        Editando <%= "#{btp_bloc.model_name.human}: #{btp_bloc.name}" %>
+      <% end %>
+    </h2>
+  </div>
+  <%= form_with(model: btp_bloc) do |f| %>
+    <div class='mdl-card__supporting-text'>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size'>
+          <%= f.label :name, class: 'mdl-textfield__label' %>
+          <%= f.text_field :name, class: 'mdl-textfield__input' %>
+      </div>
+      <br>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size'>
+        <%= f.label :description, class: 'mdl-textfield__label' %>
+        <%= f.text_area :description, class: 'mdl-textfield__input', rows: '2' %>
+      </div>
+    </div>
+    <div class='mdl-card__actions mdl-card--border'>
+      <%= f.submit class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= link_to t('links.show'), btp_bloc,
+          class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' unless btp_bloc.new_record? %>
+      <%= link_to t('links.back'), btp_blocs_path, class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    </div>
+  <% end %>
+</div>

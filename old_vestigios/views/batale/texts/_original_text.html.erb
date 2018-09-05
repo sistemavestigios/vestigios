@@ -1,0 +1,115 @@
+<div class="paper-material mdl-card mdl-shadow--2dp" id="original-text">
+  <div class="card-text-title mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Código: <%= batale_text.codigo_texto || "(Vazio)" %>
+    </h2>
+  </div>
+
+  <div class="mdl-card__menu card-menu-button">
+    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="show-dialog-more-info">
+      <i class="material-icons" >info</i>
+    </button>
+  </div>
+
+
+  <!-- <div class="card-text-full-text mdl-card__supporting-text" id="texto-original" style="white-space:pre"> -->
+  <div class="card-text-full-text mdl-card__supporting-text" id="texto-original">
+    <%= batale_text.texto_original_highlighted %>
+  </div>
+
+  <div class=" mdl-card__actions mdl-card--border">
+    <%#= link_to 'Análise', dashboard_path, class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <button class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"
+            onclick="getSelectionText();"
+            id="selection_bttn"
+            disabled>
+            Enviar Seleção
+    </button>
+    <%= link_to 'Editar', edit_batale_text_path(batale_text), class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <%= link_to 'Excluir', batale_text,
+                          method: :delete,
+                          data: { confirm: 'Deseja realmente excluir o texto?' },
+                          class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+  </div>
+
+</div>
+
+
+<ul class="demo-list-icon mdl-list custom-menu">
+  <li class='mdl-list__item' id='associar-erro'>
+    <span class='mdl-list__item-primary-content'>
+      <i class='material-icons mdl-list__item-icon'>mode_edit</i>
+      Associar a um erro
+    </span>
+  </li>
+</ul>
+
+<div class="mdl-tooltip mdl-tooltip--large" for="show-dialog-more-info">
+  Mais informações
+</div>
+
+<%= render 'dialog_more_info', batale_text: batale_text %>
+<%= render 'dialog_definitions', batale_text: batale_text %>
+<script>
+  $("#texto-original")[0].innerHTML = $("#texto-original")[0].innerHTML.trim();
+  register_show_dialog_event('dialog-more-info', 'show-dialog-more-info');
+
+  $(document).ready( function() {
+      customMenu();
+  });
+
+  var selection;
+
+  // Função para abilitar/desabilitar o botão de enviar seleção quando existe uma seleção no documento.
+  document.onselectionchange = function() {
+    selection = document.getSelection();
+    (selection.toString() != "")
+     ? $('#selection_bttn')[0].disabled = false
+     : $('#selection_bttn')[0].disabled = true
+  };
+
+  function bindCustomMenu(element) {
+    $(element).bind("contextmenu", function (event) {
+      // Avoid the real one
+      event.preventDefault();
+      // Show contextmenu
+      menu = $(".custom-menu");
+      menu.finish().toggle(100).
+      // In the right position (the mouse)
+      css({
+          top: (event.pageY - 90) + "px",
+          left: (event.pageX - 30) + "px"
+      });
+      register_show_dialog_event('dialog-associate-definition', 'associar-erro');
+      $("#palavra-errada")[0].value = element[0].innerText;
+      css = $("#palavra-errada")[0].parentElement.getAttribute('class');
+      $("#palavra-errada")[0].parentElement.setAttribute('class', css + ' is-dirty');
+      tags = element[0];
+      if(element[0].getAttribute('correct-word') != null) {
+        $("#palavra-correta")[0].value = element[0].getAttribute('correct-word');
+        css = $("#palavra-correta")[0].parentElement.getAttribute('class');
+        $("#palavra-correta")[0].parentElement.setAttribute('class', css + ' is-dirty');
+      } else {
+        $("#palavra-correta")[0].value = "";
+        $("#palavra-correta")[0].parentElement.setAttribute('class', 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label');
+      }
+    });
+  }
+
+  function customMenu() {
+    tags = Object.values($('[id^="word_index_"]'));
+    tags.forEach(function(tag) {
+      bindCustomMenu($("#"+tag.id));
+    });
+  }
+
+  // If the document is clicked somewhere
+  $(document).bind("mousedown", function (e) {
+    // If the clicked element is not the menu
+    if (!$(e.target).parents(".custom-menu").length > 0) {
+      // Hide it
+      $(".custom-menu").hide(100);
+    }
+  });
+
+</script>

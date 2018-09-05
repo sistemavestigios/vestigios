@@ -1,0 +1,41 @@
+<% if @batale_errortogs != nil %>
+  $('#errortogs').empty();
+  $('#errortogs').append("<%= escape_javascript(render 'list_errortogs') %>");
+  $('#batale_definitions').empty();
+  $("#pdf-bttn").hide();
+  $("#new-category-bttn").show();
+  bind_accordion();
+  toggle_nested();
+<% else %>
+  $("#new-category-bttn").hide();
+  $("#pdf-bttn").show();
+  $('#errortogs').empty();
+  $('#batale_definitions').empty();
+  $('#batale_definitions').append(
+    "<h4 align='center'> <%if @batale_definitions != nil %><%= pluralize @count, 'regra encontrada', 'regras encontradas'%>:</h4><%= escape_javascript render 'list_definitions', batale_definitions: @batale_definitions %><% end %>");
+    $("#paginator").html("<%if @batale_definitions != nil %><%= escape_javascript(paginate(@batale_definitions, remote: true)).to_s %> <%end%>");
+    bind_accordion();
+    toggle_nested();
+  $('#download_dialog').empty();
+  $('#download_dialog').append(
+    "<h6> Selecione as regras que deseja baixar:</h6>"+
+    "<%= escape_javascript render 'regras_download_pdf', batale_definitions: @batale_definitions %>");
+<% end %>
+function download_errortog_pdf(){
+  fechar_dialog('pdf_config');
+  params = {};
+  def_ids = [];
+  $('.definition').each(function() { this.checked ? def_ids.push(this.id) : null })
+  params['def_ids'] = def_ids;
+  $(".checkbox").each(function (){ this.checked ? params[this.id] = this.checked : null });
+
+  if (def_ids.length != 0) {
+    ajax({
+      type: 'get',
+      url: "/download_batale_errortog_pdf",
+      data: params,
+      sucess: "ok 200",
+      error: "Erro"
+    });
+  }
+}

@@ -1,0 +1,71 @@
+.card-text-accordion {
+  margin: 1rem 0 0 0;
+  padding: 0 2rem;
+  min-height: 0;
+  width: 100%;
+  //estilo para o toggle aninhado
+  ul {
+    list-style: none;
+    padding: 0;
+
+    .inner {
+      overflow: hidden;
+      display: none;
+    }
+
+    li {
+      margin: 5px;
+
+      h6.toggle {
+        width: 70%;
+        display: block;
+        padding: 0;
+        margin: 2px;
+        transition: background 0.3s ease;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .right {
+    position: absolute;
+    right: 60%;
+    vertical-align: bottom;
+  }
+}
+
+.texts-accordion {
+  background-color: #fff;
+  color: #777;
+  margin: 0 5%;
+  padding: 0;
+}
+
+.texts-accordion:hover {
+  color: #000;
+}
+
+h6.accordion {
+  cursor: pointer;
+}
+
+div.accordion {
+  display: none;
+}
+
+h6.accordion:after {
+  color: #777;
+  /* Unicode character for "plus" sign (+) */
+  content: '\02795';
+  float: right;
+  font-size: 13px;
+  margin-left: 5px;
+}
+
+h6.accordion.active:after {
+  /* Unicode character for "minus" sign (-) */
+  content: "\2796";
+}

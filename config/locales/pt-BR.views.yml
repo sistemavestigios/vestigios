@@ -1,0 +1,27 @@
+---
+pt-BR:
+  authorization:
+    not_authorized: 'Você não tem permissão para acessar esta página.'
+  links:
+    back:           'Voltar'
+    cancel:         'Cancelar'
+    confirm:        'Você tem certeza?'
+    delete:         'Excluir'
+    edit:           'Editar'
+    new:            'Adicionar %{model}'
+    next:           'Próximo'
+    previous:       'Anterior'
+    show:           'Visualizar'
+  menu:
+    sign_out:       'Sair'
+  success:
+    create:         '%{model} criado com sucesso.'
+    destroy:        '%{model} excluído com sucesso.'
+    update:         '%{model} atualizado com sucesso.'
+  views:
+    pagination:
+      first:        "&laquo; Primeira"
+      last:         "Última &raquo;"
+      previous:     "&lsaquo; Anterior"
+      next:         "Próxima &rsaquo;"
+      truncate:     "&hellip;"

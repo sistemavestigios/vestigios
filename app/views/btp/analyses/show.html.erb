@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<div id="analysis_metadata" class="paper-material mdl-card mdl-shadow--2dp">
+  <%= render partial: 'analysis_metadata' %>
+</div>
+
+<div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+<% if @analysis.type_analyzed == 'Btp::Text' %>
+  <%= render partial: 'analyze_texts' %>
+<% elsif @analysis.type_analyzed == 'Btp::Color' %>
+  <%= render partial: 'analyze_colors' %>
+<% elsif @analysis.type_analyzed == 'Btp::Bloc' %>
+  <%= render partial: 'analyze_blocs' %>
+<% end %>
+</div>
+
+<style>
+#analysis_metadata {
+  min-height: 0px;
+  margin-bottom: 12px;
+  padding: 10px 24px 10px 24px;
+  text-align: center;
+}
+</style>

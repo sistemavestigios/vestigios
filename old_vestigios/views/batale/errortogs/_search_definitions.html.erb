@@ -1,0 +1,97 @@
+<%= form_tag batale_errortogs_path, remote: true, method: :get, id: 'batale_definition-search-form' do %>
+  <div class="paper-material mdl-card mdl-shadow--2dp"style="padding: 10px 24px 10px 24px">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">
+        Busca
+      </h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :categoria, nil, class: "mdl-textfield__label", for: "input_errortog" %>
+        <%= text_field_tag :errortog, nil, class: "mdl-textfield__input", id: "input_errortog" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :regra, nil, class: "mdl-textfield__label", for: "input_regra" %>
+        <%= text_field_tag :regra, nil, class: "mdl-textfield__input", id: "input_regra" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :palavra_alvo, nil, class: "mdl-textfield__label", for: "input_palavra_alvo" %>
+        <%= text_field_tag :palavra_alvo, nil, class: "mdl-textfield__input", id: "input_palavra_alvo" %>
+      </div>
+      <br>
+      Filtro por categorias:
+      <% errortogs = Batale::Errortog.all; depth = 0; %>
+      <select id="select<%=depth%>" form="batale_definition-search-form" name="<%=depth%>">
+        <option value=""></option>
+        <% errortogs.each do |err| %>
+          <option value='<%=err.id%>'><%=err.name%></option>
+        <% end %>
+      </select>
+      <% errortogs = Batale::Errortog.get_next_depth(errortogs); depth = 1; %>
+      <% begin %>
+      <select id="select<%=depth%>" style="display:none" name="<%=depth%>">
+        <option value=""></option>
+        <% errortogs.each do |err| %>
+          <option value='<%=err.id.to_s%>' id="<%=err.id.to_s + '_' + err.parent_errortog.id.to_s%>"><%=err.name%></option>
+        <% end %>
+      </select>
+      <% errortogs = Batale::Errortog.get_next_depth(errortogs); depth += 1; %>
+      <% end while errortogs != [] %>
+    </div>
+    <div id="batale_definition-search-errors"></div>
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+      <%= button_tag(type: :submit,
+                id: "submit_form",
+                class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") do %>
+                Buscar
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+
+$('select').each(function(){ this.addEventListener('change', nextSelect);});
+
+function nextSelect() {
+  $('#submit_form')[0].click();
+  value = this.value;
+  id = Number(this.id.replace('select', ''));
+  if (id < $('select').length - 1){
+    next_select = '#select'+String(id+1);
+    if(value == '') { // hide next select
+      $(next_select)[0].setAttribute('style', 'display:none');
+      $(next_select)[0].value = '';
+    } else{ // show next select
+      $(next_select)[0].removeAttribute('style');
+      $(next_select)[0].value = '';
+      has_att_style = 0;
+      $(next_select + ' option').each(function() { // só mostra os errortogs filhos do select anterior
+        this.id.match(RegExp(value)) == null && this.value != ''
+        ? this.setAttribute('style', 'display:none')
+        : this.removeAttribute('style');
+        if(this.hasAttribute('style')) has_att_style += 1;
+      });
+      if(has_att_style == $(next_select + ' option').length - 1)
+        $(next_select)[0].setAttribute('style', 'display:none'); // Não mostra select sem errortogs
+    }
+  }
+  updateDefinitions(value);
+}
+
+function updateDefinitions(errortog_id) {
+  $('input:checkbox').each(function() {
+    id = this.id;
+    li = this.parentNode.parentNode.parentNode;
+    id.match(RegExp(errortog_id, 'gi')) == null
+      ? li.setAttribute('style', 'display:none')
+      : li.removeAttribute('style');
+    if (errortog_id == '') li.removeAttribute('style');
+  });
+}
+
+
+
+</script>

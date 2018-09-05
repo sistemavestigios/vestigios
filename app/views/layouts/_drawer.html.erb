@@ -1,0 +1,14 @@
+<% if user_signed_in? %>
+<div class="mdl-layout__drawer">
+  <span class="mdl-layout-title">Vestígios</span>
+  <nav class="mdl-navigation">
+    <%= link_to "Dashboard", root_path, class: "mdl-navigation__link" %>
+    <%= link_to "Btp Textos", btp_texts_path, class: "mdl-navigation__link" %>
+    <%= link_to "Btp Cores", btp_colors_path, class: "mdl-navigation__link" %>
+    <%= link_to "Btp Blocos", btp_blocs_path, class: "mdl-navigation__link" %>
+    <%= link_to "Batale Textos", batale_texts_path, class: "mdl-navigation__link" %>
+    <%= link_to "Batale Erros", batale_errortogs_path, class: "mdl-navigation__link" %>
+    <%= link_to "Sair", destroy_user_session_path, method: :delete, class: "mdl-navigation__link"%>
+  </nav>
+</div>
+<% end %>

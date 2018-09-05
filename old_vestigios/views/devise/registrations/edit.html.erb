@@ -1,0 +1,79 @@
+<div class="form-center">
+  <h3 align="center">Editar informações</h3>
+  <!-- <%= resource_name.to_s.humanize %> -->
+  <div class="form-center mdl-card mdl-shadow--6dp" style="padding: 20px 24px 10px 24px">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <%= f.text_field :first_name, autofocus: true,
+          class:"mdl-textfield__input", type:"text", id:"f_name"%>
+      <label class="mdl-textfield__label" for="f_name"><%= f.label :Nome %></label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <%= f.text_field :last_name, class:"mdl-textfield__input", type:"text", id:"l_name"%>
+       <label class="mdl-textfield__label" for="l_name"><%= f.label :Sobrenome %></label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <%= f.email_field :email, autofocus: true, class:"mdl-textfield__input", type:"text", id:"mail"%>
+      <label class="mdl-textfield__label" for="mail"><%= f.label :email %></label>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div style="margin-top: 16px">
+        Alterar senha<br>
+        <span style="font-size: 10pt; color:#808080">
+          *caso não deseje alterar sua senha, deixe em branco os campos abaixo
+        </span>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <%= f.password_field :password, autocomplete: "off", class:"mdl-textfield__input", id:"password"%>
+      <label class="mdl-textfield__label" for="password"><%= f.label :senha %></label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <%= f.password_field :password_confirmation, autocomplete: "off", class:"mdl-textfield__input", id:"confirm_password"%>
+      <label class="mdl-textfield__label" for="confirm_password"><%= f.label :corfirmação_senha %></label>
+    </div>
+
+    <div style="font-size: 10pt; color:#808080">
+    <% if @minimum_password_length %>
+      número mínimo de caracteres: <%= @minimum_password_length %>
+    <% end %>
+    </div>
+    
+    <div style="margin-top: 16px">
+      Confirmar Alterações <br>
+      <span style="font-size: 10pt; color:#808080">
+          *precisamos da sua senha atual para confirmar as alterações.
+      </span>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <%= f.password_field :current_password, autocomplete: "off", class:"mdl-textfield__input", id:"current_password"%>
+      <label class="mdl-textfield__label" for="current_password"><%= f.label :senha_atual %></label>
+    </div>
+    <br>
+    
+  <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+    <%= f.submit "Salvar", class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect", style:"margin: 5px 20px 0px 20px;" %>
+
+    <%= link_to "Voltar", :back, class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect", style:"margin: 5px 20px 0px 20px;" %>
+  </div>
+
+<% end %>
+</div> <!-- end card-->
+  
+<div style="margin: 24px">
+  <%= link_to "Cancelar minha conta", registration_path(resource_name),
+  data: { confirm: "Tem certeza que gostaria de cancelar sua conta?" }, method: :delete %>
+</div>
+
+
+</div> <!-- end form center-->

@@ -1,0 +1,55 @@
+<dialog id="dialog_more_info" class="mdl-dialog"style="width: 60%;">
+  <h5 class="mdl-dialog__title">Estatísticas</h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-grid sem-margem">
+      <div class="mdl-cell mdl-cell--12-col sem-margem">
+        <p class="sem-margem"><%= if @btoe_texts.count > 1 then "Dos" else "De" end %> <%= pluralize @btoe_texts.count, "Texto", "Textos" %>:</p></br>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col sem-margem scroll">
+        <ul class="sem-margem" >
+        <% @anos.each do |key,value| %>
+        <li><%= pluralize value, "é", "são" %> de <%= key %>. (<%= (value*100 / @btoe_texts.count) %>%)</li>
+        <% end %>
+        </ul>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col sem-margem scroll">
+        <ul class="sem-margem" >
+        <% @turmas.each do |key,value| %>
+        <li><%= pluralize value, "é", "são" %> da turma <%= key %>. (<%= (value*100 / @btoe_texts.count) %>%)</li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="mdl-grid sem-margem">
+      <div class="mdl-cell mdl-cell--6-col sem-margem">
+        <p>Distribuição dos textos em relação aos anos</p>
+        <%= pie_chart @anos %>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col sem-margem">
+        <p>Distribuição dos textos em relação às turmas</p>
+        <%= pie_chart @turmas %>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect close">Ok</button>
+  </div>
+</dialog>
+
+<style>
+.sem-margem {
+  margin: 0;
+}
+.mdl-cell--12-col p {
+  font-size: 16px;
+}
+
+.scroll ul li {
+  font-size: 14px;
+}
+
+.scroll {
+  height: 75px;
+  overflow-y: scroll;
+}
+</style>

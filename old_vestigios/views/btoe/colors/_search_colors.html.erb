@@ -1,0 +1,67 @@
+<%= form_tag btoe_colors_path, remote: true, method: :get, id: 'btoe_color-search-form' do %>
+  <div class="paper-material search-card mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+    <div class="mdl-card__title mdl-card--expand">
+      <h5 style="padding: 0px 10px 0px 10px">
+        Busca em Cores
+      </h5>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors medium_size">
+        <%= label_tag "Buscar por nome da cor", nil, class: "mdl-textfield__label", for: "input_busca_por_nome"%>
+        <%= text_field_tag "Buscar por nome da cor", nil, name: "color_tag", class: "mdl-textfield__input", id: "input_busca_por_nome"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors small_size">
+        <%= label_tag "Turma do trecho", nil, class: "mdl-textfield__label", for: "input_busca_por_turma"%>
+        <%= text_field_tag "Turma do trecho", nil, name: "turma", class: "mdl-textfield__input", id: "input_busca_por_turma"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors small_size">
+        <%= label_tag "Ano do trecho", nil, class: "mdl-textfield__label", for: "input_busca_por_ano"%>
+        <%= text_field_tag "Ano do trecho", nil, name: "ano", class: "mdl-textfield__input", id: "input_busca_por_ano"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors small_size">
+        <%= label_tag "Sigla do trecho", nil, class: "mdl-textfield__label", for: "input_busca_por_sigla"%>
+        <%= text_field_tag "Sigla do trecho", nil, name: "sigla", class: "mdl-textfield__input", id: "input_busca_por_sigla"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors small_size">
+        <%= label_tag "Pólo do trecho", nil, class: "mdl-textfield__label", for: "input_busca_por_polo"%>
+        <%= text_field_tag "Pólo do trecho", nil, name: "polo", class: "mdl-textfield__input", id: "input_busca_por_polo"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors small_size">
+        <%= label_tag "Número da Prof.", nil, class: "mdl-textfield__label", for: "input_busca_por_numero_professora"%>
+        <%= text_field_tag "Número da Prof.", nil, name: "numero_professora", class: "mdl-textfield__input", id: "input_busca_por_numero_professora"%>
+      </div>
+
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors full_size">
+        <%= label_tag "Buscar por conteúdo dos trechos associados", nil, class: "mdl-textfield__label", for: "input_busca_por_conteudo"%>
+        <%= text_field_tag "Buscar por conteúdo dos trechos associados", nil, name: "content", class: "mdl-textfield__input", id: "input_busca_por_conteudo"%>
+      </div>
+
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-colors medium_size">
+        <%= label_tag "Buscar por comentários nas cores", nil, class: "mdl-textfield__label", for: "input_busca_por_conteudo"%>
+        <%= text_field_tag "Buscar por comentários nas cores", nil, name: "comment_search", class: "mdl-textfield__input", id: "input_busca_por_conteudo"%>
+      </div>
+      <div id="colors-info"></div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border" style="padding:  10px 0 0 0">
+      <%= button_tag(type: :submit,
+                class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") do %>
+                Buscar
+      <% end %>
+      <%= link_to "Análise", btoe_analyses_path, class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect disabled" %>
+      <%# talvez um botão de limpar %>
+      <button type="button" class="mdl-button mdl-js-button mdl-button--icon" id="dwnld-tn-pdf" style='color: rgba(255,152,0, 0.9)'>
+        <i class="material-icons">picture_as_pdf</i>
+      </button>
+    </div>
+  </div>
+  <div class="mdl-tooltip" data-mdl-for="dwnld-tn-pdf">
+    Baixar <strong>PDF</strong>
+  </div>
+<% end %>

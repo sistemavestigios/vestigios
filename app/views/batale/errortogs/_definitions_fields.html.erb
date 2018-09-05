@@ -1,0 +1,28 @@
+<div class="mdl-grid">
+  <%= form.fields_for :definitions do |f| %>
+    <div class="mdl-cell mdl-cell--3-col">
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= f.label :example, class: 'mdl-textfield__label' %>
+        <%= f.text_field :example, class: 'mdl-textfield__input' %>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--3-col">
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= f.label :target_word, class: 'mdl-textfield__label' %>
+        <%= f.text_field :target_word, class: 'mdl-textfield__input' %>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--3-col">
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= f.label :rule, class: 'mdl-textfield__label' %>
+        <%= f.text_field :rule, class: 'mdl-textfield__input' %>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--3-col checkbox">
+      <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="<%= f.object.id %>">
+        <%= f.check_box :_destroy, class: 'mdl-checkbox__input', id: f.object.id  %>
+        <span class="mdl-checkbox__label">Deletar</span>
+      </label>
+    </div>
+  <% end %>
+</div>

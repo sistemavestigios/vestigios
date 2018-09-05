@@ -1,0 +1,42 @@
+<% if estrato.class == Batale::Stratum %>
+<dialog <%="id=dialog_info_estrato#{estrato.numero_estrato}"%> class="mdl-dialog"style="width: 60%;">
+  <h5 class="mdl-dialog__title">Informações do Estrato <%= estrato.numero_estrato %></h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--6-col">
+        <p><strong>Ano: </strong><%= estrato.ano_coleta %></p>
+
+        <p><strong>Material Coletado: </strong><%= estrato.material_coletado %></p>
+
+        <p><strong>Tipo de Coleta: </strong><%= estrato.tipo_coleta %></p>
+
+        <p><strong>Série/Ano: </strong><%= estrato.serie_ano_coleta %></p>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col">
+        <p><strong>Local da coleta: </strong><%= estrato.local_coleta %></p>
+
+        <p><strong>Escola: </strong><%= estrato.escola %></p>
+
+        <p><strong>Número de textos: </strong><%= estrato.quantidade_de_textos %></p>
+
+      </div>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button close">Ok</button>
+    <%= button_to("Editar informações", edit_batale_stratum_path(estrato), method: "get", class: "mdl-button") %>
+  </div>
+</dialog>
+<% elsif estrato.class == 1.class %>
+<dialog <%="id=dialog_info_estrato#{estrato}"%> class="mdl-dialog"style="width: 60%;">
+  <h5 class="mdl-dialog__title">Informações do Estrato <%= estrato %></h5>
+  <div class="mdl-dialog__content">
+    <p>As informações sobre este estrato ainda não foram inseridas.</p>
+    <p>Por favor, clique no botão 'Adicionar informações' para adicioná-las.</p>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button close">Fechar</button>
+    <%= button_to("Adicionar informações", new_batale_stratum_path, method: "get", class: "mdl-button") %>
+  </div>
+</dialog>
+<% end %>

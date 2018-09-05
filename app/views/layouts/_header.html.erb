@@ -1,0 +1,32 @@
+<header class="mdl-layout__header">
+  <div class="mdl-layout__header-row">
+    <span class="mdl-layout-title breadcrumbs"><%= render_breadcrumbs %></span>
+    <div class="mdl-layout-spacer"></div>
+    <nav class="mdl-navigation">
+      <% if current_user %>
+        <%= link_to "#{current_user.name}", edit_user_path(current_user), class: "mdl-navigation__link" %>
+        <button id="edit-signout" class="mdl-button mdl-js-button mdl-button--icon">
+          <i class="material-icons">keyboard_arrow_down</i>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="edit-signout">
+          <li><%= link_to "Sair", destroy_user_session_path, method: :delete, class: "mdl-menu__item"%></li>
+        </ul>
+      <% else %>
+        <%= link_to "Entrar", new_user_session_path, class: "mdl-navigation__link" %>
+      <% end %>
+    </nav>
+  </div>
+  <% if controller_name == 'dashboard' %>
+      <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+        <a href="#fixed-tab-inicio" class="mdl-layout__tab is-active">Início</a>
+        <a href="#fixed-tab-analises" class="mdl-layout__tab">Análises</a>
+      </div>
+  <% elsif controller_name == 'site' %>
+      <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+        <a href="#fixed-tab-system" class="mdl-layout__tab is-active">Sistema Vestígios</a>
+        <a href="#fixed-tab-geale" class="mdl-layout__tab">GEALE</a>
+        <a href="#fixed-tab-batale" class="mdl-layout__tab">BATALE</a>
+        <a href="#fixed-tab-btp" class="mdl-layout__tab">BTP</a>
+      </div>
+  <% end %>
+</header>

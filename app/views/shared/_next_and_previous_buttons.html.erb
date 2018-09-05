@@ -1,0 +1,22 @@
+<% if @previous.present? %>
+  <%= link_to t('links.previous'),
+                params[:controller] == 'btp/texts' ?
+                  btp_text_path(@previous, request.query_parameters) : batale_text_path(@previous, request.query_parameters),
+                class: 'mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect' %>
+<% else %>
+  <%= link_to t('links.previous'), '#',
+                class: 'mdl-button mdl-js-button mdl-button--colored mdl-button--raised',
+                disabled: true %>
+<% end %>
+<% if @next.present? %>
+  <%= link_to t('links.next'),
+                params[:controller] == 'btp/texts' ?
+                  btp_text_path(@next, request.query_parameters) : batale_text_path(@next, request.query_parameters),
+                style: 'float: right;',
+                class: 'mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect' %>
+<% else %>
+  <%= link_to t('links.next'), '#',
+                style: 'float: right;',
+                class: 'mdl-button mdl-js-button mdl-button--colored mdl-button--raised',
+                disabled: true %>
+<% end %>

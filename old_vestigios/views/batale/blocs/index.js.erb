@@ -1,0 +1,3 @@
+$("#pagination-itens").empty();
+$("#pagination-itens").html("<%= escape_javascript render partial: 'batale/blocs/list_blocs' %>");
+$("#paginator").html("<%= escape_javascript(paginate(@batale_blocs, remote: true)).to_s %>");

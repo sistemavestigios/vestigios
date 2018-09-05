@@ -1,0 +1,234 @@
+<dialog id="dialog-associate-definition" class="mdl-dialog"style="width: 60%;">
+  <h5 class="mdl-dialog__title">Associar a um erro</h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <textarea class="mdl-textfield__input" type="text" id="palavra-errada"></textarea>
+      <label class="mdl-textfield__label" for="palavra-errada">Texto Original*</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input class="mdl-textfield__input" type="text" id="palavra-correta">
+      <label class="mdl-textfield__label" for="palavra-correta">Texto Normatizado*</label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input class="mdl-textfield__input" type="text" id="search-input" onkeyup="updateDefinitions()">
+      <label class="mdl-textfield__label" for="search-input">Categoria</label>
+    </div>
+    <br>
+
+    <% errortogs = Batale::Errortog.all; depth = 0; %>
+    <select id="select<%=depth%>">
+      <option value=""></option>
+      <% errortogs.each do |err| %>
+        <option value='<%=err.id%>'><%=err.name%></option>
+      <% end %>
+    </select>
+    <% errortogs = Batale::Errortog.get_next_depth(errortogs); depth = 1; %>
+    <% begin %>
+    <select id="select<%=depth%>" style="display:none;">
+      <option value=""></option>
+      <% errortogs.each do |err| %>
+        <option value='<%=err.id.to_s%>' id="<%=err.id.to_s + '_' + err.parent_errortog.id.to_s%>"><%=err.name%></option>
+      <% end %>
+    </select>
+    <% errortogs = Batale::Errortog.get_next_depth(errortogs); depth += 1; %>
+    <% end while errortogs != [] %>
+
+    <ul class="demo-list-control mdl-list">
+      <% @definitions.each do |definition| %>
+      <li class="mdl-list__item">
+        <span class="mdl-list__item-primary-content">
+          <span class="mdl-chip__contact mdl-color--<%=definition.get_color_and_initial[:color]%> mdl-color-text--white" id="<%=definition.id%>">
+            <%= definition.get_color_and_initial[:initial] %>
+          </span>
+          <div class="mdl-tooltip" data-mdl-for="<%=definition.id%>">
+            <%= definition.parents_names %>
+          </div>
+          <%= definition.errortog_name %>: <%= definition.regra %>
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <% id = definition.id.to_s + definition.errortogs_ids %>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="<%=id%>">
+            <input type="checkbox" id="<%=id%>" class="mdl-checkbox__input"/>
+          </label>
+        </span>
+      </li>
+      <% end %>
+    </ul>
+    Campos com * são obrigatórios
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+             onclick="associateDefinition()" id="associar" disabled>
+      Associar
+    </button>
+    <button type="button" class="close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+      Cancelar
+    </button>
+  </div>
+</dialog>
+
+<script>
+var tags;
+
+$('#palavra-correta')[0].addEventListener('input', function(){
+  definitionIDs().length > 0 && $('#palavra-correta').val() != ''
+    ? $('#associar')[0].removeAttribute('disabled')
+    : $('#associar')[0].setAttribute('disabled', 'true');
+});
+
+// Adiciona listener a cada checkbox, checa a quantidade de definições checadas e abilita/desabilita botão de associar definição
+$('input:checkbox').each(function() {
+  this.addEventListener('click', function() {
+    definitionIDs().length > 0 && $('#palavra-correta').val() != ''
+      ? $('#associar')[0].removeAttribute('disabled')
+      : $('#associar')[0].setAttribute('disabled', 'true');
+  });
+});
+
+// Retorna array de ids das definições checadas
+function definitionIDs() {
+  ids = [];
+  $('input:checkbox').each(function() {
+    if(this.checked) ids.push(this.id.split('_')[0]);
+  });
+  return ids;
+}
+
+$("#texto-original").on('click', getTags);
+
+function getTags() {
+  tags = Object.values(document.getSelection().getRangeAt(0).cloneContents().children);
+}
+
+function markWord(palavra) {
+  e = tags;
+  if(e.tagName == "B") {
+    d = document.createElement('mark');
+    d.id = e.id;
+    d.innerText = palavra.trim();
+    spaces = '';
+    for(var c of e.innerHTML) spaces += c == ' ' ? ' ' : '';
+    e.parentNode.insertBefore(d, e);
+    b = document.createElement('b');
+    b.innerText = spaces;
+    e.parentNode.insertBefore(b, e);
+    e.parentNode.removeChild(e);
+    return d.id;
+  } else {
+    return e.id;
+  }
+}
+
+function markWords(trecho) {
+  id = "#"+tags[0].id;
+  first_tag = $(id)[0];
+  delete_tags = []
+  if(first_tag.tagName == "B") {
+    mark = document.createElement('mark');
+    mark.id = "word_index_";
+    tags.forEach(function(tag) {
+      id = tag.id.replace(/word_index_/,'');
+      mark.id += id == "" ? "" : id+"_";
+      mark.innerHTML += tag.tagName == "B" ? tag.innerHTML : "<br>";
+      delete_tags.push($("#"+tag.id)[0]);
+    });
+    mark.id = mark.id.slice(0, mark.id.length-1);//Remove último '_'
+    p_node = first_tag.parentNode;
+    p_node.insertBefore(mark, first_tag);
+    delete_tags.forEach(function(tag) {
+      if(tag != undefined) p_node.removeChild(tag);
+    })
+    sibling = mark.nextElementSibling;
+    b = document.createElement('b');
+    b.innerText = ' ';
+    p_node.insertBefore(b, sibling);
+    if(sibling.tagName == "BR") p_node.removeChild(sibling);
+    return mark.id;
+  } else {
+    return tags[0].id;
+  }
+}
+
+function associateDefinition() {
+  trecho = $("#palavra-errada")[0].value.trim();
+  tag_id = "";
+  if(trecho.indexOf(' ') == -1 && trecho.indexOf('\n') == -1) {// Associando uma palavra
+    tag_id = markWord(trecho);
+  } else {// Associando trecho
+    tag_id = markWords(trecho);
+  }
+  $("#"+tag_id)[0].setAttribute('correct-word', $("#palavra-correta")[0].value);
+  ajax({
+    type:'PUT',
+    url:'/associateDefinition',
+    data: {
+      id: '<%= batale_text.id %>',
+      id_def: definitionIDs(),
+      palavra_errada: trecho,
+      tag_id: tag_id,
+      palavra_correta: $("#palavra-correta")[0].value,
+      texto_highlighted: $("#texto-original")[0].innerHTML.trim()
+    },
+    success: "Regra associada com sucesso",
+    error: "Algum erro impediu a regra de ser associada"
+  });
+  fechar_dialog('dialog-associate-definition');
+}
+
+$('select').each(function(){ this.addEventListener('change', nextSelect);});
+
+function nextSelect() {
+  value = this.value;
+  id = Number(this.id.replace('select', ''));
+  if (id < <%= depth - 1 %>){
+    next_select = '#select'+String(id+1);
+    if(value == '') { // hide next select
+      $(next_select)[0].setAttribute('style', 'display:none');
+      $(next_select)[0].value = '';
+    } else{ // show next select
+      $(next_select)[0].removeAttribute('style');
+      $(next_select)[0].value = '';
+      has_att_style = 0;
+      $(next_select + ' option').each(function() { // só mostra os errortogs filhos do select anterior
+        this.id.match(RegExp(value)) == null && this.value != ''
+        ? this.setAttribute('style', 'display:none')
+        : this.removeAttribute('style');
+        if(this.hasAttribute('style')) has_att_style += 1;
+      });
+      if(has_att_style == $(next_select + ' option').length - 1)
+        $(next_select)[0].setAttribute('style', 'display:none'); // Não mostra select sem errortogs
+    }
+  }
+  updateDefinitions(value);
+}
+
+function updateDefinitions(errortog_id) {
+  // a partir da pesquisa
+  regra = $('#search-input')[0].value;
+  if (regra != '' && errortog_id == undefined) {
+    // Seta os selects pra vazio
+    $('select').each(function() {
+      this.value = '';
+      if(this.id != 'select0') this.setAttribute('style', 'display:none');
+     });
+    $('#dialog-associate-definition li.mdl-list__item').each(function(){
+      text = this.childNodes[1].textContent.replace(/^\s+|\s+$/g, '');
+      text.search(RegExp(regra, 'gi')) == -1
+        ? this.setAttribute('style', 'display:none')
+        : this.removeAttribute('style');
+    });
+  } else {
+    $('#search-input')[0].value = '';
+    // a partir de next_select
+    $('input:checkbox').each(function() {
+      id = this.id;
+      li = this.parentNode.parentNode.parentNode;
+      id.match(RegExp(errortog_id, 'gi')) == null
+        ? li.setAttribute('style', 'display:none')
+        : li.removeAttribute('style');
+      if (errortog_id == '') li.removeAttribute('style');
+    });
+  }
+}
+</script>

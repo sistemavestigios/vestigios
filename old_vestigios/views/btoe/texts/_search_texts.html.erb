@@ -1,0 +1,100 @@
+<%= form_tag btoe_see_more_path, remote: true, method: :get, id: 'btoe_text-search-form' do %>
+  <div class="paper-material mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-card--expand">
+      <h5 style="padding: 0px 10px 0px 10px">
+          Busca
+      </h5>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= label_tag "Busca por conteúdo", nil, class: "mdl-textfield__label", for: "input_busca_por_conteudo"%>
+        <%= search_field_tag "Busca por conteúdo", nil, name: "content", class: "mdl-textfield__input", id: "input_busca_por_conteudo"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :sigla, nil, class: "mdl-textfield__label", for: "input_sigla" %>
+        <%= search_field_tag :sigla, params[:sigla], class: "mdl-textfield__input", id: "input_sigla", pattern: "([A-Za-z]{3,})?(;[A-Za-z]{3,})*" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :ano, nil, class: "mdl-textfield__label", for: "input_ano" %>
+        <%= search_field_tag :ano, nil, class: "mdl-textfield__input", id: "input_ano", pattern: "([0-9]{4})?(;[0-9]{4})*" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :polo, nil, class: "mdl-textfield__label", for: "input_polo" %>
+        <%= search_field_tag :polo, nil, class: "mdl-textfield__input", id: "input_polo", pattern: "([A-Za-z]{1,2})?(;[A-Za-z]{1,2})*" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :turma, nil, class: "mdl-textfield__label", for: "input_turma" %>
+        <%= search_field_tag :turma, nil, class: "mdl-textfield__input", id: "input_turma", pattern: "([0-9]{1,2})?(;[0-9]{1,2})*" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= label_tag :número_professora, nil, class: "mdl-textfield__label", for: "input_numero_professora" %>
+        <%= search_field_tag :numero_professora, nil, class: "mdl-textfield__input", id: "input_numero_professora", pattern: "([0-9]{1,2})?(;[0-9]{1,2})*" %>
+      </div>
+
+      <p>
+        Quantidade de textos por página:
+        <%= select_tag "per_page", options_for_select([5,10,15,20,25], params[:per_page].to_i) %>
+      </p>
+
+      <% if not @btoe_texts.nil? %>
+        <% if @btoe_texts.size > 1 %>
+          <div id="text-info">Foram encontrados <%= @btoe_texts.size %> textos.</div>
+        <% elsif @btoe_texts.size == 0 %>
+          <div id="text-info">Não foram encontrados textos</div>
+        <% else %>
+          <div id="text-info">Foi encontrado 1 texto</div>
+        <% end %>
+      <% else %>
+        <div id="text-info"></div>
+      <% end %>
+    </div>
+
+    <div id="btoe_text-search-errors"></div>
+    <div class="mdl-card__actions mdl-card--border">
+      <%= button_tag(type: :submit,
+                class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") do %>
+                Buscar
+      <% end %>
+      <% if params[:action] == "index" %>
+      <%= button_tag(type: :submit,
+                name: "btn_clear",
+                class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") do %>
+                Limpar Busca
+      <% end %>
+      <% end %>
+      <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect disabled"
+              id="analyses_btn" disabled onclick="window.location.href='<%= btoe_analyses_path %>'">
+        Análises
+      </button>
+
+      <% if params[:action] == "index" or params[:action] == "see_more"%>
+      <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-button--icon" id="dwnld-tn-pdf" disabled>
+        <i class="material-icons">picture_as_pdf</i>
+      </button>
+      <% end %>
+    </div>
+  </div>
+  <div class="mdl-tooltip" data-mdl-for="dwnld-tn-pdf">
+    Baixar <strong>PDF</strong>
+  </div>
+<% end %>
+
+
+
+<script>
+  <% if not session[:search_params].nil? %>
+    $("#analyses_btn").prop("disabled", false);
+  <% else %>
+    $("#analyses_btn").prop("disabled", true);
+  <% end %>
+  $("#per_page").change(function() {
+    if(this.value){
+      $("#btoe_text-search-form").submit();
+    }
+  });
+</script>

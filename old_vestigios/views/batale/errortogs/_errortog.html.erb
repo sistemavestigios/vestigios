@@ -1,0 +1,30 @@
+<% if children.exists? %>
+  <ul class="inner">
+    <% children.each_with_index do |child, i| %>
+      <li >
+        <h6 class="mdl-list__item-primary-content toggle" style="width: 60%; margin-bottom: 10px">
+          <%= child.name %>
+          <% if child.child_errortogs? %>
+            <i class="material-icons right" id="changeable-icon">
+            expand_more
+            </i>
+          <% else %>
+            <%= link_to raw("<i class='material-icons' style='padding-right: 2px;'>message</i>"), batale_errortog_path(child),
+                            class: "mdl-list__item-secondary-action mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect right",
+                            id: child.id.to_s + "-" + i.to_s() +"-btn-show" %>
+            <p>&emsp;Essa categoria possui <%= pluralize child.definitions.count, 'regra associada', 'regras associadas' %></p>
+            <span class='mdl-tooltip mdl-tooltip--top' for="<%=child.id.to_s+'-'+i.to_s%>-btn-show">Ver</span>
+          <% end %>
+        </h6>
+        <%= render 'errortog', children: child.child_errortogs %>
+      </li>
+      <% if child.definitions? && (child.name == 'Contextual' || child.name == 'Arbitrário') %>
+      <%= link_to raw("<i class='material-icons' style='padding-right: 2px;'>message</i>"), batale_errortog_path(child),
+                        class: "mdl-list__item-secondary-action mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect right",
+                        id: child.id.to_s+"-"+i.to_s()+"-btn-show" %>
+        <p>&emsp;Essa categoria possui <%= pluralize child.definitions.count, 'regra associada', 'regras associadas' %></p>
+        <span class='mdl-tooltip mdl-tooltip--top' for="<%=child.id.to_s+'-'+i.to_s%>-btn-show">Ver</span>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

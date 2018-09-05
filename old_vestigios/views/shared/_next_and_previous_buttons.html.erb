@@ -1,0 +1,29 @@
+<div style="margin-left: 2.5%; margin-right: 2.5%;">
+  <% if not @anterior.nil? %>
+
+    <%= button_to "anterior",
+                params[:controller] == "btoe/texts" ? btoe_text_path(@anterior, request.query_parameters) : batale_text_path(@anterior, request.query_parameters),
+                method: "get",
+                style: 'float: left; margin-bottom: 0.5%;',
+                class: "mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect" %>
+  <% else %>
+    <%= button_to "anterior", "#",
+                style: 'float: left; margin-bottom: 0.5%;',
+                class: "mdl-button mdl-js-button mdl-button--colored mdl-button--raised",
+                disabled: true %>
+  <% end %>
+
+  <% if not @proximo.nil? %>
+    <%= button_to "proximo",
+                params[:controller] == "btoe/texts" ? btoe_text_path(@proximo, request.query_parameters) : batale_text_path(@proximo, request.query_parameters),
+                method: "get",
+                style: 'float: right; margin-bottom: 0.5%;',
+                class: "mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect" %>
+  <% else %>
+    <%= button_to "proximo", "#",
+                style: 'float: right; margin-bottom: 0.5%;',
+                class: "mdl-button mdl-js-button mdl-button--colored mdl-button--raised",
+                disabled: true %>
+  <% end %>
+
+</div>

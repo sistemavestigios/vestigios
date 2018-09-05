@@ -1,0 +1,9 @@
+<span class="mdl-chip mdl-chip--contact mdl-chip--deletable">
+    <span class="mdl-chip__contact mdl-color-text--white" style="background-color: <%= color.hex_color %>">
+      <%= link_to color.tag.first.capitalize, btp_color_path(color), style: "color: #{color.text_color}; text-decoration: none;" %>
+    </span>
+    <span class="mdl-chip__text">
+      <%= color.tag %>
+    </span>
+    <a href="#" class="mdl-chip__action"><i class="material-icons">cancel</i></a>
+</span>

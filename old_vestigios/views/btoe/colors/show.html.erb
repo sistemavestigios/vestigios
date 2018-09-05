@@ -1,0 +1,291 @@
+<div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px" >
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Tag: <%= @btoe_color.tag %>
+    </h2>
+  </div>
+
+  <div class="mdl-card__supporting-text">
+    <p>
+      <strong>Cor criada por:</strong> <%= @btoe_color.user.full_name %>
+    </p>
+    <% if @btoe_color.excerpts.count > 0 %>
+      <ul style="margin: 0px;">
+        <% @btoe_color.excerpts.each_with_index do |e,index| %>
+          <li><p><strong>Trecho vindo de <%= @btoe_texts[index].codigo_texto%>: </strong><%= e.trecho %></p>
+          <%= link_to "Texto Original", btoe_text_path(e.text_id), style: "color: rgba(0,0,0,0.54);" %>
+          <%= link_to "Excluir trecho",
+                        deleteColorExcerpt_path,
+                        style: "color: rgba(0,0,0,0.54)",
+                        remote: true,
+                        method: :delete,
+                        data: {params: { color_id: @btoe_color.id.to_s, excerpt_id: e.id.to_s },
+                        confirm: 'Tem certeza?' } %>
+          <%= link_to "Adicionar comentário", "javascript:comment_excerpt('#{e.id}')", style: "color: rgba(0,0,0,0.54)" %>
+          <% if e.comments? %>
+            <ul style="margin: 0px;">
+              <% e.comments.each do |comment| %>
+                <li>
+                  <p>
+                    &emsp;<strong>Comentário de <%= comment.user.full_name %>: </strong>
+                    <%= raw"<span id=comment-#{comment.id}> #{comment.comment}</span>" %>
+                    <%= comment_icons comment, comment.id %>
+                  </p>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <h6> Ainda não existem textos relacionados com essa cor. </h6>
+    <% end %>
+    <% if @btoe_color.comments.count > 0 %>
+      <ul style="margin: 0px;">
+        <% @btoe_color.comments.each do |comment| %>
+          <li>
+            <p>
+              <strong>Comentário de <%= comment.user.full_name %>: </strong>
+              <%= raw"<span id=comment-#{comment.id}> #{comment.comment}</span>" %>
+              <%= comment_icons comment, comment.id %>
+            </p>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <h6> Ainda não existem comentários nessa cor. </h6>
+    <% end %>
+  </div>
+
+  <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            onclick="location.href='<%= edit_btoe_color_path(@btoe_color) %>'">
+      Editar cor
+    </button>
+    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            id="add-comment">
+      Adicionar Comentário
+    </button>
+    <% if @btoe_color.comments? || @btoe_color.excerpts? %>
+      <button class="mdl-button mdl-js-button mdl-button--icon" id="ttpdf" style="color: rgba(255,152,0, 0.9)" onclick="download_pdf()">
+        <i class="material-icons">picture_as_pdf</i>
+      </button>
+    <% else %>
+      <button class="mdl-button mdl-js-button mdl-button--icon"  disabled>
+        <i class="material-icons" id="ttnopdf">picture_as_pdf</i>
+      </button>
+    <% end %>
+  </div>
+
+  <%= render partial: 'comment_dialog', locals: {editing: false} %>
+  <%= render partial: 'comment_dialog', locals: {editing: true} %>
+  <%= comment_dialog 'dialog-comment-excerpt', 'Comentando trecho', 'comment-excerpt', 'bttn-save-commented-excerpt' %>
+  <%= list_comments_dialog 'dialog-excerpt-comments', 'Comentários deste trecho', @btoe_excerpts_comments %>
+  <%= comment_dialog 'dialog-comment-comment', 'Comentando comentário', 'comment-comment', 'bttn-save-commented-comment' %>
+  <%= list_comments_dialog 'dialog-comment-comments', 'Comentários deste comentário', @btoe_child_comments %>
+</div>
+<div class="mdl-tooltip" data-mdl-for="ttpdf">
+  Download <strong>PDF</strong>
+</div>
+<div class="mdl-tooltip" data-mdl-for="ttnopdf">
+  A cor precisa ter um comentário ou um trecho associado para poder ser baixada
+</div>
+
+<dialog id='dwnld-color' class='mdl-dialog' style='width: 60%;'>
+  <h5 class='mdl-dialog__title'>Opções de download</h5>
+  <div class='mdl-dialog__content'>
+    <ul class='mdl-list'>
+      <% if @btoe_color.has_excerpt_comments? %>
+        <li class='mdl-list__item'>
+          <span class='mdl-list__item-primary-content'>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-excerpt-comments">
+              <input type="checkbox" id="show-excerpt-comments" class="mdl-checkbox__input">
+              <span class="mdl-checkbox__label">Mostrar comentários de trecho</span>
+            </label>
+          </span>
+        </li>
+      <% end %>
+      <% if @btoe_color.comments? %>
+        <li class='mdl-list__item'>
+          <span class='mdl-list__item-primary-content'>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-color-comments">
+              <input type="checkbox" id="show-color-comments" class="mdl-checkbox__input">
+              <span class="mdl-checkbox__label">Mostrar comentários da cor</span>
+            </label>
+          </span>
+        </li>
+        <% if @btoe_color.has_comment_comments? %>
+          <li class='mdl-list__item' style="display: none">
+            <span class='mdl-list__item-primary-content'>
+              <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-comment-comments">
+                <input type="checkbox" id="show-comment-comments" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">Mostrar comentários de comentário</span>
+              </label>
+            </span>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <div class='mdl-dialog__actions'>
+    <button type='button' id='dwnld-pdf' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' disabled>
+      Download
+    </button>
+    <button type='button' class='close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'
+            onclick="fechar_dialog('dwnld-color')">
+    Cancelar
+    </button>
+  </div>
+</dialog>
+
+<script>
+
+if ($("#show-color-comments")[0] != undefined) {
+  $("#show-color-comments")[0].addEventListener('change', function(){
+    if ($("#show-comment-comments")[0] != undefined) {
+      if (this.checked) {
+        $("#show-comment-comments")[0].parentNode.parentNode.parentNode.removeAttribute('style')
+      } else{
+        $("#show-comment-comments")[0].parentNode.parentNode.parentNode.setAttribute('style', 'display:none');
+        $("#show-comment-comments")[0].parentNode.MaterialCheckbox.uncheck();
+      }
+    }
+  });
+}
+
+function click_handle() {
+  show_excerpt_comments = $("#show-excerpt-comments")[0] != undefined ? $("#show-excerpt-comments")[0].checked : false;
+  show_color_comments = $("#show-color-comments")[0] != undefined ? $("#show-color-comments")[0].checked : false;
+  show_comment_comments = $("#show-comment-comments")[0] != undefined ? $("#show-comment-comments")[0].checked : false;
+
+  fechar_dialog('dwnld-color');
+  ajax({
+    type: 'get',
+    url: "/download_btoe_color",
+    data: {
+      color_id: '<%= @btoe_color.id %>',
+      show_excerpt_comments: show_excerpt_comments,
+      show_color_comments: show_color_comments,
+      show_comment_comments: show_comment_comments,
+    },
+    sucess: "Arquivo enviado com sucesso",
+    error: "Algum erro impediu esse arquivo de ser baixado"
+  });
+  $("#show-excerpt-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-color-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-comment-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-comment-comments")[0].parentNode.parentNode.parentNode.setAttribute('style', 'display:none');
+}
+
+
+function download_pdf() {
+  dialog = $("#dwnld-color")[0];
+  dialog.showModal();
+
+  inputs = [];
+  $("#show-excerpt-comments")[0] != undefined ? inputs.push($("#show-excerpt-comments")[0]) : null;
+  $("#show-color-comments")[0] != undefined ? inputs.push($("#show-color-comments")[0]) : null;
+  $("#show-comment-comments")[0] != undefined ? inputs.push($("#show-comment-comments")[0]) : null;
+
+  inputs.length == 0 ? click_handle() : null;
+
+  inputs.forEach(function(e){
+    if("<%= @btoe_color.excerpts? %>"){
+      $("#dwnld-pdf")[0].removeAttribute('disabled');
+    }
+    e.addEventListener('change', function(){
+      if(inputs[0].checked || inputs[1].checked || inputs[2].checked) {
+        $("#dwnld-pdf")[0].removeAttribute('disabled');
+      } else {
+        $("#dwnld-pdf")[0].setAttribute('disabled', true);
+      }
+    });
+  });
+
+  $("#dwnld-pdf")[0].addEventListener('click', click_handle);
+
+}
+
+function comment_comment(comment_id) {
+  dialog = $("#dialog-comment-comment")[0];
+  dialog.showModal();
+
+  $('#comment-comment')[0].addEventListener('input', function(){
+    this.value != ""
+     ? $('#bttn-save-commented-comment')[0].removeAttribute('disabled')
+     : $('#bttn-save-commented-comment')[0].setAttribute('disabled', true);
+  });
+
+  $("#bttn-save-commented-comment").on("click", function(){
+    ajax({
+      type: 'POST',
+      url: '/commentColorComment',
+      data: { color_id: "<%= @btoe_color.id %>" , comment_id: comment_id, comment: $('#comment-comment')[0].value },
+      success: "Comentário adicionado com sucesso.",
+      error: "Falha ao adicionar comentário."
+    });
+  });
+}
+
+function edit_comment(comment_id){
+  dialog = $("#dialog-edit-comment")[0];
+  dialog.showModal();
+  comment = $("#comment-edit");
+  comment.parent().addClass("is-focused");
+  comment.parent().addClass("is-dirty");
+  comment[0].innerHTML = $("#comment-"+comment_id)[0].innerHTML.trim();
+
+  $("#btn-save-edited-comment").on("click", function(){
+    ajax({
+      type:'GET',
+      url:'<%= edit_btoe_comment_path %>',
+      data: { color_id: "<%= @btoe_color.id %>", comment_id: comment_id, edited_comment: $("#comment-edit")[0].value },
+      success: "Comentário editado com sucesso.",
+      error: "Falha ao editar comentário."
+    });
+  });
+}
+
+function comment_excerpt(excerpt_id){
+  dialog = $('#dialog-comment-excerpt')[0];
+  dialog.showModal();
+  $('#comment-excerpt')[0].addEventListener('input', function(){
+    this.value != ""
+     ? $('#bttn-save-commented-excerpt')[0].removeAttribute('disabled')
+     : $('#bttn-save-commented-excerpt')[0].setAttribute('disabled', true);
+  });
+
+  $('#bttn-save-commented-excerpt').on('click', function(){
+    ajax({
+      type: 'POST',
+      url: '/commentColorExcerpt',
+      data: { color_id: "<%= @btoe_color.id %>", excerpt_id: excerpt_id, comment: $('#comment-excerpt')[0].value },
+      success: "Comentário adicionado com sucesso.",
+      error: "Falha ao adicionar comentário."
+    })
+  });
+
+}
+
+function list_comment_comments(comment_id) {
+  dialog = $('#dialog-comment-comments')[0];
+  dialog.showModal();
+  $('span.comment').each(function(){
+    this.id != comment_id
+    ? this.setAttribute('style', 'display:none')
+    : this.removeAttribute('style');
+  });
+}
+
+function list_excerpt_comments(comment_id) {
+  dialog = $('#dialog-excerpt-comments')[0];
+  dialog.showModal();
+  $('span.comment').each(function(){
+    this.id != comment_id
+    ? this.setAttribute('style', 'display:none')
+    : this.removeAttribute('style');
+  });
+}
+
+</script>

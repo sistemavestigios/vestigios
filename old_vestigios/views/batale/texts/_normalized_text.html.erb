@@ -1,0 +1,52 @@
+<div class="paper-material mdl-card mdl-shadow--2dp" >
+  <div class="card-text-title mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Texto Normatizado:
+    </h2>
+  </div>
+
+  <div class="card-text-full-text mdl-card__supporting-text">
+    <div class="mdl-textfield mdl-js-textfield  mdl-textfield--expandable" style="width: 100%;">
+      <textarea class="mdl-textfield__input white-space-pre"
+                type="text"
+                rows=5
+                id="texto-normatizado"
+                disabled>
+              <%= batale_text.texto_normatizado %>
+      </textarea>
+    </div>
+  </div>
+
+  <div class="mdl-card__actions mdl-card--border">
+    <button class=" mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"
+            id="edit_texto_normatizado_bttn"
+            onclick="toggle_edit_texto_normatizado();">
+      Editar
+    </button>
+    <button style="display: none;"class=" mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"
+            id="save_texto_normatizado_bttn"
+            onclick="updateTextoNormatizado();">
+      Salvar
+    </button>
+  </div>
+</div>
+
+<script>
+function toggle_edit_texto_normatizado(){
+  esqueminha_do_mdl = '<span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span>';
+  if($("#texto-normatizado").attr("disabled") == "disabled"){//está desabilitado
+    //habilita
+    $("#texto-normatizado").attr("disabled", null); // removendo o "disabled"
+    $("#texto-normatizado").css("color", "rgba(0, 0, 0, 0.541176)"); // mudando a cor do texto
+    $("#edit_texto_normatizado_bttn").html("Cancelar"); // trocando a label do botão
+    $("#save_texto_normatizado_bttn").css("display", ""); // e mostrando o salvar
+  }
+  else{//está habilitado
+    //desabilita
+    $("#texto-normatizado").attr("disabled", "true"); // adicionando o "disabled"
+    $("#texto-normatizado").css("color", "rgba(0, 0, 0, 0.258824)"); // mudando a cor do texto
+    $("#edit_texto_normatizado_bttn").html("Editar"); // trocando a label do botão
+    $("#save_texto_normatizado_bttn").css("display", "none"); // e escondendo o salvar
+  }
+}
+</script>

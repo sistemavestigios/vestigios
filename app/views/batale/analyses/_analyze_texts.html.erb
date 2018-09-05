@@ -1,0 +1,48 @@
+<p>Um total de <%= pluralize(@info['texts_count'], 'texto foi analisado', 'textos foram analisados') %>, contendo <%= pluralize(@info['normalized'].token_count, 'palavra', 'palavras') %> (excluindo stop words).</p>
+<p>Foram produzidos por <%= pluralize(@info['student_number'].token_count, 'aluno', 'alunos') %>, pertencem a <%= pluralize(@info['collection_number'].tokens.uniq.count, 'coleta', 'coletas') %>, realizadas entre <%= @info['collection_year'].tokens.min %> e <%= @info['collection_year'].tokens.max %>.
+
+<% @info['word_occurrences_strict'].each do |word, count| %>
+<p> A palavra "<%= word %>" foi estritamente encontrada <%= pluralize(count, 'vez', 'vezes') %> nos textos analisados.</p>
+<% end %>
+<% @info['word_occurrences_match'].each do |word, count| %>
+<p> A palavra "<%= word %>" foi encontrada <%= pluralize(count, 'vez', 'vezes') %> nos textos analisados.</p>
+<% end %>
+
+<p>As 30 palavras com mais ocorrências nos textos</p>
+<%= column_chart @info['normalized'].token_frequency[0..30],
+                    label: "Quantidade", xtitle: "Palavras", ytitle: "Ocorrências" %>
+<hr>
+<p> Os alunos possuem as seguintes idades </p>
+<%= pie_chart @info['student_age'].token_frequency.map { |t,v| if t.to_i > 0 then [t + ' anos',v] end }.compact %>
+
+<p> Com a seguinte distribuição por sexo</p>
+<%= pie_chart @info['student_sex'].token_frequency.map { |t,v| [t.upcase, v] } %>
+
+<p> Vêm das seguintes escolas, </p>
+<%= pie_chart @info['texts_by_student_school_count'] %>
+
+<p> Séries</p>
+<%= pie_chart @info['texts_by_student_grade_count'] %>
+
+<p> E turmas</p>
+<%= pie_chart @info['texts_by_student_class_count'] %>
+<hr>
+<p>Quantidade de textos por estrato<p>
+<%= pie_chart @info['texts_by_stratum_number_count'].map { |t,v| ["Estrato #{t}", v] } %>
+
+<p>Quantidade de textos por número da coleta<p>
+<%= pie_chart @info['collection_number'].token_frequency.map { |t,v| ["Coleta #{t}", v] } %>
+
+<p>Quantidade de textos por ano da coleta<p>
+<%= pie_chart @info['collection_year'].token_frequency %>
+
+<% if @info['type'].token_frequency.count > 0 %>
+  <p>Tipos de textos encontrados: </p>
+  <%= pie_chart @info['type'].token_frequency  %>
+<% end %>
+<hr>
+<% @info['most_used_words_by_class'].each do |student_class, words_counted| %>
+  <p>Turma <%= student_class %>:<p>
+  <%= column_chart words_counted.token_frequency[0..30],
+                   label: "Quantidade", xtitle: "Palavras", ytitle: "Ocorrências" %>
+<% end %>

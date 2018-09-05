@@ -1,0 +1,18 @@
+<div class="mdl-layout__drawer">
+  <span class="mdl-layout-title">Atlas</span>
+  <nav class="mdl-navigation">
+    <% if user_signed_in? %>
+      <%= link_to "Dashboard", root_path, class: "mdl-navigation__link" %>
+      <%= link_to "Btoe Textos", btoe_texts_path, class: "mdl-navigation__link" %>
+      <%= link_to "Btoe Cores", btoe_colors_path, class: "mdl-navigation__link" %>
+      <%= link_to "Btoe Blocos", btoe_blocs_path, class: "mdl-navigation__link" %>
+      <%= link_to "Batale Textos", batale_texts_path, class: "mdl-navigation__link" %>
+      <%= link_to "Batale Blocos", batale_blocs_path, class: "mdl-navigation__link" %>
+      <%= link_to "Batale Erros", batale_errortogs_path, class: "mdl-navigation__link" %>
+      <%= link_to "Sair", destroy_user_session_path, method: :delete, class: "mdl-navigation__link"%>
+    <% else %>
+      <%= link_to "Entrar", new_user_session_path, class: "mdl-navigation__link" %>
+      <%= link_to "Criar conta", new_user_registration_path, class: "mdl-navigation__link" %>
+    <% end %>
+  </nav>
+</div>

@@ -1,0 +1,64 @@
+<dialog id="pdf_config" class="mdl-dialog" style="width: 60%;">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Selecione os campos do PDF
+    </h2>
+  </div>
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col">
+      <%= create_checkbox_inputs({
+          'palavra_marcada': 'Palavra Marcada',
+          'palavra_correta': 'Palavra Correta',
+          'serie':           'Série',
+          'numero_coleta':   'Número da Coleta'
+          }) %>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col">
+      <%= create_checkbox_inputs({
+          'sexo':       'Sexo',
+          'estrato':    'Estrato',
+          'idade':      'Idade',
+          'ano_coleta': 'Ano da Coleta'
+          }) %>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col">
+      <%= create_checkbox_inputs({
+          'tipo_texto':     'Tipo do Texto',
+          'numero_texto':   'Número do Texto',
+          'numero_aluno':   'Número do Aluno',
+          'escola_crianca': 'Escola da Criança'
+          }) %>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions" style="padding: 2px 0 2px 0">
+    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+      style="margin: 0 10px 0 0 "
+      onclick="download_definition_pdf()" id="ttpdf">
+        Download
+    </button>
+    <button type="button" class="close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            style="margin: 0 10px 0 0" onclick="">
+      Cancelar
+    </button>
+  </div>
+
+</dialog>
+
+<script>
+  register_show_dialog_event('pdf_config', 'show-dialog');
+
+  function download_definition_pdf(){
+    fechar_dialog('pdf_config');
+    params = {}
+    params["definition_id"] = '<%= @batale_definition.id %>';
+    $("input").each(function (){ this.checked ? params[this.id] = this.checked : null });
+    ajax({
+      type: 'get',
+      url: "/download_batale_definition_pdf",
+      data: params,
+      sucess: "Arquivo enviado com sucesso",
+      error: "Algum erro impediu o download do arquivo"
+    });
+  }
+</script>

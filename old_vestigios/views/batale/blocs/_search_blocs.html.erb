@@ -1,0 +1,28 @@
+<%= form_tag batale_blocs_path, remote: true, method: :get, id: 'batale_text-search-form' do %>
+  <div class="paper-material search-card mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+    <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Busca em blocos
+    </h2>
+  </div>
+    <div class="mdl-card__supporting-text">
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= label_tag "Busca em Título", nil, class: "mdl-textfield__label", for: "input_busca"%>
+        <%= text_field_tag "Busca em Conteúdo", nil, name: "search", class: "mdl-textfield__input", id: "input_busca"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= label_tag "Busca por conteúdo", nil, class: "mdl-textfield__label", for: "input_busca_por_conteudo"%>
+        <%= text_field_tag "Busca por conteúdo", nil, name: "content", class: "mdl-textfield__input", id: "input_busca_por_conteudo"%>
+      </div>
+
+    </div>
+    <div id="batale_text-search-errors"></div>
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+      <%= button_tag(type: :submit,
+                class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") do %>
+                Buscar
+      <% end %>
+    </div>
+  </div>
+<% end %>

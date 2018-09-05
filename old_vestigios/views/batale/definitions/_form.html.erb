@@ -1,0 +1,36 @@
+<%= form_for(@batale_definition) do |f| %>
+  <%= render 'shared/errors', obj: @batale_definition %>
+
+  <div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px" >
+    <div>
+      <br>
+      &ensp; Errortogs:
+      <%= f.select :errortog_id, @batale_errortogs.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :regra, class: "mdl-textfield__label", for: "input_regra"%>
+        <%= f.text_field :regra, class: "mdl-textfield__input", id: "input_regra"%>
+      </div>
+      <br>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :exemplo, class: "mdl-textfield__label", for: "input_exemplo"%>
+        <%= f.text_field :exemplo, class: "mdl-textfield__input", id: "input_exemplo"%>
+      </div>
+      <br>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :palavra_alvo, class: "mdl-textfield__label", for: "input_palavra_alvo"%>
+        <%= f.text_field :palavra_alvo, class: "mdl-textfield__input", id: "input_palavra_alvo"%>
+      </div>
+      <br>
+    </div>
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+      <%= link_to 'Voltar', @batale_definition.errortog,
+          class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+      <%= f.submit "Salvar",
+          class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"%>
+    </div>
+</div>
+<% end %>
+
+<script>
+$('select')[0].setAttribute('form', $('form')[0].id);
+</script>

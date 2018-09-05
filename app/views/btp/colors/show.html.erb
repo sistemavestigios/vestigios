@@ -1,0 +1,40 @@
+<div class='paper-material mdl-card mdl-shadow--2dp'>
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text"> Tag: <%= @btp_color.tag %> </h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <p> <strong>Cor criada por:</strong> <%= @btp_color.user.name %> </p>
+    <% if @btp_color.excerpts.count.positive? %>
+      <%= render 'btp/colors/partials/excerpts'  %>
+    <% else %>
+      <h6> Ainda não existem textos relacionados com essa cor. </h6>
+    <% end %>
+    <% if @btp_color.comments.count.positive? %>
+      <%= render 'btp/colors/partials/comments'  %>
+    <% else %>
+      <h6> Ainda não existem comentários nessa cor. </h6>
+    <% end %>
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <%= link_to t('links.edit'), edit_btp_color_path(@btp_color), class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    <%= link_to t('links.back'), btp_colors_path, class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="add-comment">
+      Adicionar Comentário
+    </button>
+    <% if @btp_color.comments? || @btp_color.excerpts? %>
+      <button class="mdl-button mdl-js-button mdl-button--icon" id="ttpdf" style="color: rgba(255,152,0, 0.9)" onclick="download_pdf()">
+        <i class="material-icons">picture_as_pdf</i>
+      </button>
+    <% else %>
+      <button class="mdl-button mdl-js-button mdl-button--icon"  disabled>
+        <i class="material-icons" id="ttnopdf">picture_as_pdf</i>
+      </button>
+    <% end %>
+  </div>
+</div>
+<div class="mdl-tooltip" data-mdl-for="ttpdf">
+  Download <strong>PDF</strong>
+</div>
+<div class="mdl-tooltip" data-mdl-for="ttnopdf">
+  A cor precisa ter um comentário ou um trecho associado para poder ser baixada
+</div>

@@ -1,0 +1,18 @@
+<h6><%= pluralize(@info['blocs_count'], 'bloco', 'blocos') %> em análise.</h6>
+<h6><%= pluralize(@info['excerpts_count'], 'trecho', 'trechos') %> de <%= pluralize(@info['texts_count'], 'texto', 'textos') %>, com <%= @info['words_count'].tokens.count %> palavras(excluindo stop words).</h6>
+
+<h6>As 30 palavras mais encontradas nos trechos selecionados:</h6>
+<%= column_chart @info['words_count'].token_frequency[0..30], label: "Quantidade",
+                    xtitle: "Palavras", ytitle: "Ocorrências" %>
+
+<h6>Quantidade de textos por ano:</h6>
+<%= pie_chart info['year'].token_frequency.map { |y, count| [ 'Ano: ' + y, count] } %>
+
+<h6>Quantidade de textos por pólo:</h6>
+<%= pie_chart info['region'].token_frequency.map { |r, count| [ 'Pólo ' + r, count] } %>
+
+<h6>Quantidade de textos por temática:</h6>
+<%= pie_chart info['acronym'].token_frequency.map { |ac, count| [ 'Temática ' + ac, count] } %>
+
+<h6>Quantidade de textos por turma:</h6>
+<%= pie_chart info['class_number'].token_frequency.map { |cn, count| [ 'Turma ' + cn, count] } %>

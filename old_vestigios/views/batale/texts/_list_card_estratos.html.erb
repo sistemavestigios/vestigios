@@ -1,0 +1,53 @@
+<div id="paginator" align="center"><%= paginate(@estratos, remote: true) %></div>
+
+<div class="mdl-grid">
+  <% @estratos.each_with_index do |estrato,i| %>
+    <div class="btoe-color-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--2-col">
+      <%# content_tag(tag, content, options = {})
+       gera uma tag html do tipo tag contendo content com tais options
+       aqui: <div class="mdl..." style="color....."><h2 class="mdl...">color_tag</h2></div>%>
+      <%= content_tag(:div,
+                          content_tag(:h2,
+                                      link_to(
+                                            "Estrato #{estrato[:numero_estrato]}",
+                                            batale_see_more_path(:numero_estrato => estrato[:numero_estrato]),
+                                            class: "link-estrato"),
+                                      class: "mdl-card__title-text" ),
+                          class: "mdl-card__title mdl-card--expand" ,
+                          style: "color: #ffffff; background-color: #A57224;") %>
+
+      <div class="mdl-card__supporting-text">
+        <p>Contém <%= pluralize(estrato[:count], "texto", "textos") %>.</p>
+      </div>
+
+      <div class="mdl-card__menu">
+        <button id="open_info<%= estrato[:numero_estrato] %>_dialog" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect botao-info-estrato">
+          <i class='material-icons'>info</i>
+        </button>
+
+      </div>
+
+      <div class="mdl-card__actions mdl-card--border">
+        <%= link_to "Visualizar",
+                    batale_see_more_path(:numero_estrato => estrato[:numero_estrato]),
+                    class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                      %>
+      </div>
+
+    </div>
+
+    <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="open_info<%= estrato[:numero_estrato] %>_dialog">
+      Informações sobre o estrato <%= estrato[:numero_estrato] %>
+    </div>
+    <% if @model_estratos.size >= @estratos.size %>
+      <%= render partial: "batale/texts/info_estrato", locals: { estrato: @model_estratos[i] } %>
+    <% else %>
+      <%= render partial: "batale/texts/info_estrato", locals: { estrato: estrato[:numero_estrato] }%>
+    <% end %>
+    <script>
+      register_show_dialog_event("dialog_info_estrato<%= estrato[:numero_estrato] %>", "open_info<%= estrato[:numero_estrato] %>_dialog");
+    </script>
+  <% end %>
+</div>
+
+<div id="paginator" align="center"><%= paginate(@estratos, remote: true) %></div>

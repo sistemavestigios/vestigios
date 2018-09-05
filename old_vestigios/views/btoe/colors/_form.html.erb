@@ -1,0 +1,30 @@
+<%= form_for(btoe_color) do |f| %>
+  <%= render 'shared/errors', obj: btoe_color %>
+
+  <div class="mdl-card mdl-shadow--2dp" align="center" style="padding: 10px 24px 10px 24px">
+    <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+      <%= f.label :tag, class: "mdl-textfield__label", for: "input_tag"%>
+      <%= f.text_field :tag, class: "mdl-textfield__input", id: "input_tag"%>
+    </div>
+    <br>
+
+    <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+      <%#= f.label :hex_color, class: "mdl-textfield__label", for: "input_hex_color" %>
+      <%= f.text_field :hex_color, class: "mdl-textfield__input", id: "input_hex_color" %>
+    </div>
+    
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+        <%= link_to 'Voltar', btoe_colors_path,
+        class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+      
+        <%= f.submit "Salvar", 
+        class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+    </div>
+    
+  </div>
+<% end %>
+<script>
+$('#input_hex_color').minicolors({
+  inline: true
+});
+</script>

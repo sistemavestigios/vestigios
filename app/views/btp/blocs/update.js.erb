@@ -1,0 +1,13 @@
+<% if @btp_bloc.update(params.require(:btp_bloc).permit(excerpts_attributes: Btp::Excerpt.permitted_attributes)) %>
+  var dialog_add = $('#dialog_add_to_bloc')[0];
+  dialog_add.close();
+  message = "<%= t('success.update', model: Btp::Bloc.model_name.human) %>";
+  showSnackBar(message);
+  $('#selected-text p').html('Selecione o trecho no texto acima e clique em \"Enviar Seleção\"');
+  $('#selected-text ul').html('');
+  newLi = "<%= escape_javascript new_li_bloc(@btp_bloc) %>";
+  $(newLi).appendTo('.associated_blocs')
+<% else %>
+  message = "<%= @btp_bloc.errors.full_messages.join('; ') %>"
+  showSnackBar(message);
+<% end %>

@@ -1,0 +1,53 @@
+<header class="mdl-layout__header">
+  <div class="mdl-layout__header-row">
+    <!-- Title -->
+    <span class="mdl-layout-title breadcrumbs">
+      <%# a gema renderiza as breadcrumbs que foram adicionadas na controller via add_breadcrumb %>
+      <%= render_breadcrumbs %>
+    </span>
+    <!-- Add spacer, to align navigation to the right -->
+    <div class="mdl-layout-spacer"></div>
+    <!-- Navigation. We hide it in small screens. -->
+    <!-- large-screen-only -->
+    <nav class="mdl-navigation">
+      <%= render "shared/spinner" %>
+      <% if current_user %>
+        <%= link_to "#{current_user.email}", edit_user_registration_path(current_user), class: "mdl-navigation__link"%>
+      <% else %>
+        <%= link_to "Criar conta", new_user_registration_path, class: "mdl-navigation__link"%>
+        <%= link_to "Entrar", new_user_session_path, class: "mdl-navigation__link" %>
+      <% end %>
+
+      <% if current_user %>
+      <!-- Right aligned menu below button -->
+      <button id="demo-menu-lower-right"
+              class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">keyboard_arrow_down</i>
+      </button>
+
+      <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+          for="demo-menu-lower-right">
+        <li><%= link_to "Sair", destroy_user_session_path, method: :delete, class: "mdl-menu__item"%></li>
+        <li><%= link_to "Minha Conta", edit_user_registration_path(current_user), class: "mdl-menu__item"%></li>
+      </ul>
+      <% end %>
+  </div>
+  <% if params["controller"] == "dashboard" and params["action"] == "index" %>
+  <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#fixed-tab-inicio" class="mdl-layout__tab is-active">Início</a>
+      <a href="#fixed-tab-analises" class="mdl-layout__tab">Análises</a>
+      <a href="#fixed-tab-modificacoes" class="mdl-layout__tab">Atividade</a>
+    </div>
+  <% end %>
+  <% if params["controller"] == "public/site" and params["action"] == "index" %>
+  <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#fixed-tab-system" class="mdl-layout__tab is-active">Sistema Vestígios</a>
+      <a href="#fixed-tab-geale" class="mdl-layout__tab">GEALE</a>
+      <a href="#fixed-tab-batale" class="mdl-layout__tab">BATALE</a>
+      <a href="#fixed-tab-btp" class="mdl-layout__tab">BTP</a>
+      <a href="#fixed-tab-form" class="mdl-layout__tab">Cadastro</a>
+    </div>
+  <% end %>
+</header>

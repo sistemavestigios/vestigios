@@ -1,0 +1,59 @@
+<div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+  <div class="card-text-title mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Código: <%= btoe_text.codigo_texto || "(Vazio)" %>
+    </h2>
+  </div>
+
+  <div class="mdl-card__menu card-menu-button">
+    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="show-dialog-more-info">
+      <i class="material-icons" >info</i>
+    </button>
+  </div>
+
+
+  <div class="card-text-full-text mdl-card__supporting-text">
+    <p id="selectable-text" class="white-space-pre"><%= raw @marked_text[:user] %></p>
+  </div>
+
+  <div class=" mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+    <%#= link_to 'Análise', dashboard_path, class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <%= link_to 'Enviar Seleção', "#",
+                                class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect",
+                                onclick: "getSelectionText();" %>
+    <%= link_to 'Editar', edit_btoe_text_path(btoe_text), class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <%= link_to 'Excluir', btoe_text,
+                          method: :delete,
+                          data: { confirm: 'Deseja realmente excluir o texto?' },
+                          class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <%= link_to raw("<i class='material-icons'>picture_as_pdf</i>"),
+          print_btoe_text_path(@btoe_text),
+          :target => '_blank',
+          style: "color: rgba(255,152,0, 0.9);",
+          id: 'ttpdf' %>
+    <!-- <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" onclick="download_pdf()" id="ttpdf" style="color: rgba(255,152,0, 0.9); margin: 0 10px 0 10px">
+      <i class="material-icons">picture_as_pdf</i>
+    </button> -->
+  </div>
+</div>
+<div class="mdl-tooltip" data-mdl-for="ttpdf">
+  Download <strong>PDF</strong>
+</div>
+
+<div class="mdl-tooltip mdl-tooltip--large" for="show-dialog-more-info">
+  Mais informações
+</div>
+<%= render 'dialog_more_info', btoe_text: @btoe_text%>
+
+<script>
+  register_show_dialog_event("dialog_more_info", "show-dialog-more-info");
+  // function download_pdf() {
+    // ajax({
+    //   type: 'get',
+    //   url: "/download_btoe_text",
+    //   data: { text_id: '<%= @btoe_text.id %>', show_associations_of: showing_associations_of },
+    //   sucess: "Arquivo enviado com sucesso",
+    //   error: "Algum erro impediu esse arquivo de ser baixado"
+    // });
+  // }
+</script>

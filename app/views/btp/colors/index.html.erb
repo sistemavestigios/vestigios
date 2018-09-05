@@ -1,0 +1,24 @@
+<%= render 'search_colors' %>
+<div class='mdl-grid'>
+  <% @btp_colors.each do |btp_color| %>
+    <div class='btp-color-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--2-col'>
+      <div class='mdl-card__title' style="color: <%= btp_color.text_color %>; background-color:<%= btp_color.hex_color %>">
+        <h2 class='mdl=card__title-text'>
+          <%= btp_color.tag %>
+        </h2>
+      </div>
+      <div class='mdl-card__supporting-text'>
+      </div>
+      <div class='mdl-card__menu'>
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect js-button strata-info">
+          <i class='material-icons'>info</i>
+        </button>
+      </div>
+      <div class='mdl-card__actions mdl-card--border'>
+          <%= link_to t('links.show'), btp_color_path(btp_color), class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<%= link_to t('links.new', model: Btp::Color.model_name.human), new_btp_color_path,
+    class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>

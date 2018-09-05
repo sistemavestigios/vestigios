@@ -1,0 +1,4 @@
+$("#pagination-itens").empty();
+$("#pagination-itens").html("<%= escape_javascript render partial: 'list_definitions' %>");
+$("#paginator").html("<%= escape_javascript(paginate(@batale_definitions, remote: true)).to_s %>");
+bind_accordion();

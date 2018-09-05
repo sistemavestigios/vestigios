@@ -1,0 +1,14 @@
+<% if @btp_bloc.save %>
+  var dialog_create = $('#dialog_create_bloc')[0];
+  dialog_create.close();
+  message = "<%= t('success.create', model: Btp::Bloc.model_name.human) %>";
+  showSnackBar(message);
+  newDiv = "<div onclick=\"Texts.saveToBloc('<%= @btp_bloc.id %>')\">" +
+            "<h5><%= @btp_bloc.name %></h5>" +
+            "<p><%= @btp_bloc.description %></p>" +
+          "</div>";
+  $(newDiv).appendTo('#dialog_add_to_bloc .mdl-dialog__content');
+<% else %>
+  message = "<%= @btp_bloc.errors.full_messages.join('; ') %>"
+  showSnackBar(message);
+<% end %>

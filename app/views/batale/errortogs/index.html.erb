@@ -1,0 +1,8 @@
+<%= render 'search_definitions' %>
+<div id="errortogs">
+  <%= render 'list_errortogs', batale_errortogs: @batale_errortogs %>
+</div>
+<div id="pagination-items">
+</div>
+<%= link_to t('links.new', model: Batale::Errortog.model_name.human), new_batale_errortog_path,
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>

@@ -1,0 +1,34 @@
+<div class='mdl-grid'>
+  <% @strata_info.each do |stratum| %>
+    <div class='btp-color-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--2-col'>
+      <div class='mdl-card__title' style='color: #fff; background-color: #A57224'>
+        <h2 class='mdl=card__title-text'> <%= "Estrato #{stratum[:stratum_number]}" %> </h2>
+      </div>
+      <div class='mdl-card__supporting-text'>
+        <p>Contém <%= pluralize(stratum[:count], 'texto', 'textos') %>.</p>
+      </div>
+      <div class='mdl-card__menu'>
+        <button id="stratum_<%= stratum[:stratum_number] %>"
+            class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect js-button strata-info"> <i class='material-icons'>info</i>
+        </button>
+      </div>
+      <div class='mdl-card__actions mdl-card--border'>
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="<%=stratum[:stratum_number]%>"
+            onclick="showStrataTexts(this)">
+            <%= t('links.show') %>
+        </button>
+      </div>
+    </div>
+    <div class='mdl-tooltip mdl-tooltip--large' data-mdl-for="stratum_<%= stratum[:stratum_number] %>">
+      Informações sobre o estrato <%= stratum[:stratum_number] %>
+    </div>
+    <%= render 'batale/texts/dialogs/stratum_info', stratum: @strata[stratum[:stratum_number]].first %>
+  <% end %>
+</div>
+<script>
+  function showStrataTexts(stratum_number) {
+    $('#stratum_number')
+      .val([stratum_number.id])
+      .trigger('change');
+  }
+</script>

@@ -1,0 +1,47 @@
+<div id="pagination-itens">
+  <%= render 'list_definitions' %>
+</div>
+<%= create_dialog_definition 'dialog_create_definition',
+                             'Associar definição a essa classe de erro',
+                             ['Regra', 'Exemplo', 'Palavra_alvo']%>
+<button class="button_margin mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+        id='new_def_button'
+        style="position: absolute; right: 0; margin: 0% 5% 5% 0%;">Nova Definição</button>
+
+<script>
+ register_show_dialog_event('dialog_create_definition', 'new_def_button');
+
+ function createDefinition() {
+   fechar_dialog('dialog_create_definition');
+   params = {};
+   params['errortog_id'] = '<%= @batale_errortog.id %>';
+   params['regra'] = $('#Regra')[0].value;
+   params['exemplo'] = $('#Exemplo')[0].value;
+   params['palavra_alvo'] = $('#Palavra_alvo')[0].value;
+
+   ajax({
+     type: 'POST',
+     url: '/createDefinition',
+     data: params,
+     success: 'Regra associada com sucesso',
+     error: 'Algum erro previniu essa regra de ser associada'
+   });
+ }
+
+ function clearDialog() {
+   fechar_dialog('dialog_create_definition');
+   $('#Regra')[0].value = '';
+   $('#Exemplo')[0].value = '';
+   $('#Palavra_alvo')[0].value = '';
+ }
+
+ $('input').each(function() {
+   this.addEventListener('input', enableDisableButton);
+ })
+
+ function enableDisableButton(){
+   ($('#Palavra_alvo')[0].value != '' && $('#Exemplo')[0].value != '' && $('#Regra')[0].value != '')
+    ? $('#dialog_definition_bttn')[0].disabled = false
+    : $('#dialog_definition_bttn')[0].disabled = true
+ }
+</script>

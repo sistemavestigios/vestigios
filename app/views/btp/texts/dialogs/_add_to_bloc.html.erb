@@ -1,0 +1,17 @@
+<dialog id="dialog_add_to_bloc" class="mdl-dialog excerpt-association">
+  <h5 class="mdl-dialog__title">Adicionar a um bloco</h5>
+  <div class="mdl-dialog__content">
+    Selecione o bloco.
+    <% @btp_blocs.each do |bloc| %>
+      <div onclick="Texts.saveToBloc('<%= bloc.id %>')">
+        <h5><%= bloc.name %></h5>
+        <p><%= bloc.description %></p>
+      </div>
+    <% end %>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button close mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Cancelar
+    </button>
+  </div>
+</dialog>

@@ -1,0 +1,63 @@
+<% if not @counter.nil? %>
+  <div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+    <p><%= pluralize @textos.size, "texto", "textos" %> em análise.</p>
+
+    <p>Um total de <%= @counter.token_count %> palavras (excluindo stop words).</p>
+
+    <% if @content %>
+      <% @content.each_pair do |k, v| %>
+        <p>A palavra procurada "<%= k %>" foi encontrada <%= v %> vezes nos textos.</p>
+      <% end %>
+    <% end %>
+<br>
+    <p>Trinta palavras mais encontradas nos textos em análise:</p>
+    <%= column_chart @counter.token_frequency[0, 30], label: "Quantidade",
+                      xtitle: "Palavras", ytitle: "Ocorrências"
+    %>
+
+    <% if @siglas_count %>
+      <% if @siglas_count.token_frequency.size > 1 %>
+        <p>Os textos analisados possuem as seguintes siglas: </p>
+        <%= pie_chart @siglas_count.token_frequency %>
+      <% else %>
+        <p>Todos os textos analisados possuem a sigla "<%= @siglas_count.tokens[0].capitalize %>" </p>
+      <% end %>
+    <% end %>
+
+    <% if @anos_count and @polos_count %>
+      <p>Os textos analisados são de coletas dos seguintes anos e pólos: </p>
+      <%= pie_chart @anos_count.token_frequency %>
+      <%= pie_chart @polos_count.token_frequency%>
+    <% end %>
+
+    <div>
+      <% @turmas_count.each_pair do |ano, turma| %>
+        <div>
+          <%= pie_chart turma.token_frequency, title: "Quantidade de Textos encontrados em determinada turma, no ano #{ano}" %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+<% else %>
+  <div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+    <p> Por favor, selecione alguns textos, cores ou blocos para análise antes. </p>
+    <p> Redirecionando para o início.</p>
+  </div>
+  <script>
+    var delay = ( function() {
+      var timer = 0;
+      return function(callback, ms) {
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+    delay(function(){
+      notification = document.querySelector('.mdl-snackbar');
+      data = { message: 'Redirecionando para o início.', timeout: 3000};
+      notification.MaterialSnackbar.showSnackbar(data);
+      window.location.href = '<%= root_path %>';
+    }, 3000);
+  </script>
+<% end %>

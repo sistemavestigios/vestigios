@@ -1,0 +1,13 @@
+<% if @btp_color.save %>
+  var dialog_create = $('#dialog_create_color')[0];
+  dialog_create.close();
+  message = "<%= t('success.create', model: Btp::Color.model_name.human) %>";
+  showSnackBar(message);
+  newDiv = "<div onclick=\"associateColor('<%= @btp_color.id %>')\">" +
+            "<h5><%= @btp_color.tag %></h5>" +
+           "</div>";
+  $('#dialog_associate_color .mdl-checkbox').before(newDiv);
+<% else %>
+  message = "<%= @btp_color.errors.full_messages.join('; ') %>"
+  showSnackBar(message);
+<% end %>

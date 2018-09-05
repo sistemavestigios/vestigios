@@ -1,0 +1,17 @@
+<dialog id="dialog_text_<%= btp_text.id %>" class="mdl-dialog medium">
+  <h5 class="mdl-dialog__title">Mais informações</h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <p> <strong><%= Btp::Text.human_attribute_name(:acronym) %>:</strong> <%= btp_text.acronym %> </p>
+        <p> <strong><%= Btp::Text.human_attribute_name(:year) %>:</strong> <%= btp_text.year %> </p>
+        <p> <strong><%= Btp::Text.human_attribute_name(:region) %>:</strong> <%= btp_text.region %> </p>
+        <p> <strong><%= Btp::Text.human_attribute_name(:class_number) %>:</strong> <%= btp_text.class_number %> </p>
+        <p> <strong><%= Btp::Text.human_attribute_name(:teacher_number) %>:</strong> <%= btp_text.teacher_number %> </p>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button close">Ok</button>
+  </div>
+</dialog>

@@ -1,0 +1,47 @@
+<% count = 0 %>
+<ul class="mdl-list">
+<% batale_definitions.each do |batale_definition| %>
+  <% if batale_definition.texts?; count += 1 %>
+    <li class="mdl-list__item">
+      <span class="mdl-list__item-secondary-action">
+        <label for="<%=batale_definition.id%>" class="mdl-checkbox mdl-js-checkbox">
+            <input type="checkbox" id="<%=batale_definition.id%>" class="mdl-checkbox__input definition" checked>
+            <span class="mdl-checkbox__label">Regra: <%= batale_definition.regra %></span>
+          </label>
+      </span>
+    </li>
+  <% end %>
+<% end %>
+</ul>
+<% if count == 0 %>
+<h6>  Não existem regras com textos associados </h6>
+<% else %>
+<h6>Selecione as opções do PDF:</h6>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+    <%= create_checkbox_inputs({
+        'palavra_marcada': 'Palavra Marcada',
+        'palavra_correta': 'Palavra Correta',
+        'serie':           'Série',
+        'numero_coleta':   'Número da Coleta'
+        }) %>
+  </div>
+  <div class="mdl-cell mdl-cell--4-col">
+    <%= create_checkbox_inputs({
+        'sexo':       'Sexo',
+        'estrato':    'Estrato',
+        'idade':      'Idade',
+        'ano_coleta': 'Ano da Coleta'
+        }) %>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <%= create_checkbox_inputs({
+        'tipo_texto':     'Tipo do Texto',
+        'numero_texto':   'Número do Texto',
+        'numero_aluno':   'Número do Aluno',
+        'escola_crianca': 'Escola da Criança'
+        }) %>
+  </div>
+</div>
+<% end %>

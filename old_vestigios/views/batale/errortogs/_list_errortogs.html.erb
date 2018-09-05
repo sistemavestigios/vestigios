@@ -1,0 +1,22 @@
+<% @batale_errortogs.each do |batale_errortog| %>
+<div class="card-text-accordeon mdl-card mdl-shadow--2dp" >
+  <div class="texts-accordeon">
+    <h6 class="accordion">
+      <%= batale_errortog.name %>
+    </h6>
+    <div class="accordion" >
+      <%= render 'errortog', children: batale_errortog.child_errortogs %>
+      <!-- ações-->
+      <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 10px 0">
+        <%= create_card_action_icons(
+                    batale_errortog,
+                    edit_batale_errortog_path(batale_errortog),
+                    batale_errortog,
+                    "Deseja realmente deletar?"
+        ) %>
+      </div>
+      <!-- final ações-->
+    </div>
+  </div>
+</div>
+<% end %>

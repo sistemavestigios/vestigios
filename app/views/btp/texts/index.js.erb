@@ -1,0 +1,15 @@
+$('#pagination-items').empty();
+$('#thematics').empty();
+$('#text-info').empty();
+<% if !@btp_texts.empty? %>
+  $("#pagination-items").html("<%= escape_javascript render 'list_texts' %>");
+  <% if @btp_texts.size > 1 %>
+    textCount = "Foram encontrados <%= @btp_texts.size %> textos.";
+  <% else %>
+    textCount = 'Foi encontrado 1 texto';
+  <% end %>
+  $('#text-info').html(textCount);
+<% else %>
+  $('#thematics').html("<%= escape_javascript render 'list_card_thematics' %>");
+  $('#text-info').html('Não foram encontrados textos');
+<% end %>

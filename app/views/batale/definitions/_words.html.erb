@@ -1,0 +1,8 @@
+<div class="mdl-cell mdl-cell--2-col">
+  <p> <%= right ? 'Palavras Corretas:' : 'Palavras Erradas:' %> </p>
+  <ul>
+    <% words.each do |word| %>
+      <li> <%= word %></li>
+    <% end %>
+  </ul>
+</div>

@@ -1,0 +1,8 @@
+<%= render 'search' %>
+
+<div id="pagination-itens">
+  <%= render partial: 'list_associated_texts' %>
+</div>
+<div id="paginator" align="center"><%= paginate(@associated_texts, remote: true) %></div>
+
+<%= render 'dialog_pdf_config' %>

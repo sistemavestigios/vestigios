@@ -1,0 +1,46 @@
+<% @batale_definitions.each do |batale_definition| %>
+<div class="card-text-accordeon mdl-card mdl-shadow--2dp" >
+  <div class="texts-accordeon">
+    <h6 class="accordion">
+      Regra: <%= batale_definition.regra %> Categoria: <%= batale_definition.errortog_name %>
+    </h6>
+    <div class="accordion">
+      <ul class="demo-list-item mdl-list">
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            Exemplo: <%= batale_definition.exemplo %>
+          </span>
+        </li>
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+          Palavra alvo: <%= batale_definition.palavra_alvo %>
+          </span>
+        </li>
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            <%= pluralize batale_definition.texts.count, 'texto associado a essa regra', 'textos associados a essa regra' %>
+          </span>
+        </li>
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            <%= pluralize batale_definition.words.count, 'palavra associada a essa regra', 'palavras associdas a essa regra' %>
+          </span>
+        </li>
+      </ul>
+      <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+        <%= create_card_action_icons(
+                    batale_definition,
+                    edit_batale_definition_path(batale_definition),
+                    batale_definition,
+                    'Tem certeza que deseja deletar essa definição?'
+        ) %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<div id="paginator" align="center">
+  <% if @batale_definitions != nil %>
+    <%= paginate(@batale_definitions, remote: true) %>
+  <% end %>
+</div>

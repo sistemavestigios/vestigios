@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vestígios</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if action_name == 'print' %>
+      <%= yield %>
+    <% else %>
+      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs" data-turbolinks="false">
+        <%= render "layouts/header" %>
+        <%= render "layouts/drawer" %>
+        <%= render "layouts/start_main_content" %>
+        <%= render "layouts/messages" %>
+        <!-- Your content goes here -->
+        <%= yield %>
+        <%= render "layouts/finish_main_content" %>
+      </div>
+    <% end %>
+  </body>
+  <script>
+    bind_accordion();
+    toggle_nested(); //descomentar a linha
+  </script>
+</html>

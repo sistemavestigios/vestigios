@@ -1,0 +1,14 @@
+<%= form_with(model: batale_stratum, local: true) do |form| %>
+  <% if batale_stratum.errors.any? %>
+    <%= render 'shared/error_messages', obj: batale_stratum %>
+  <% end %>
+  <div class="actions">
+    <% %i[collected_material collection_grades collection_type collection_year quantity region schools stratum_number].each do |field| %>
+      <p>
+        <%= form.label field %>
+        <%= form.text_field field %>
+      </p>
+    <% end %>
+    <%= form.submit %>
+  </div>
+<% end %>

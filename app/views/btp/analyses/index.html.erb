@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Analyses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Label</th>
+      <th>Favorite</th>
+      <th>Type analyzed</th>
+      <th>Params queried</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @analyses.each do |analysis| %>
+      <tr>
+        <td><%= analysis.label %></td>
+        <td><%= analysis.favorite %></td>
+        <td><%= analysis.type_analyzed %></td>
+        <td><%= analysis.params_queried %></td>
+        <td><%= link_to 'Show', btp_analysis_path(analysis) %></td>
+        <td><%= link_to 'Edit', edit_btp_analysis_path(analysis) %></td>
+        <td><%= link_to 'Destroy', btp_analyses_path(analysis), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Analysis', new_btp_analysis_path %>

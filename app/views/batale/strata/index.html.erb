@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Batale Strata</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @batale_strata.each do |batale_stratum| %>
+      <tr>
+        <td><%= link_to 'Show', batale_stratum %></td>
+        <td><%= link_to 'Edit', edit_batale_stratum_path(batale_stratum) %></td>
+        <td><%= link_to 'Destroy', batale_stratum, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Batale Stratum', new_batale_stratum_path %>

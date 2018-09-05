@@ -1,0 +1,60 @@
+<dialog id="dialog_text_<%= batale_text.id %>" class="mdl-dialog" style="width: 60%;">
+  <h5 class="mdl-dialog__title">Mais informações</h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--4-col">
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_name) %>:</strong> <%= batale_text.student_name %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_number) %>:</strong> <%= batale_text.student_number %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_age) %>:</strong> <%= batale_text.student_age %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_sex) %>:</strong> <%= batale_text.student_sex %> </p>
+      </div>
+      <div class="mdl-cell mdl-cell--4-col">
+        <p> <strong><%= Batale::Text.human_attribute_name(:stratum_number) %>:</strong> <%= batale_text.stratum_number %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:collection_number) %>:</strong> <%= batale_text.collection_number %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_text_number) %>:</strong> <%= batale_text.student_text_number %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:collection_year) %>:</strong> <%= batale_text.collection_year %> </p>
+      </div>
+
+      <div class="mdl-cell mdl-cell--4-col">
+        <p> <strong><%= Batale::Text.human_attribute_name(:type) %>:</strong> <%= batale_text.type %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_school) %>:</strong> <%= batale_text.student_school %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_grade) %>:</strong> <%= batale_text.student_grade %> </p>
+        <p> <strong><%= Batale::Text.human_attribute_name(:student_class) %>:</strong> <%= batale_text.student_class %> </p>
+      </div>
+      <%= form_for(@batale_text) do |f| %>
+        <strong>Tipo de Escrita:&nbsp;</strong>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+          <input type="radio" id="option-1" class="mdl-radio__button" name="batale_text[writing_type]" value="alfabetica">
+          <span class="mdl-radio__label">Alfabética</span>
+        </label>
+        &emsp;
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+          <input type="radio" id="option-2" class="mdl-radio__button" name="batale_text[writing_type]" value="pre-alfabetica">
+          <span class="mdl-radio__label">Pré Alfabética</span>
+        </label>
+        <%= f.submit "Salvar", class:"mdl-button", id:"submit-form" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button close">Ok</button>
+  </div>
+</dialog>
+<script>
+$("#submit-form")[0].setAttribute('hidden', true);
+
+$("#option-1")[0].addEventListener('change', showFormButton);
+$("#option-2")[0].addEventListener('change', showFormButton);
+
+function showFormButton() {
+  if($("#option-1")[0].checked || $("#option-2")[0].checked) {
+    $("#submit-form")[0].removeAttribute('hidden');
+  }
+};
+if("<%=@batale_text.writing_type.present?%>" == "true") {
+  if("<%=@batale_text.writing_type%>" == "alfabetica")
+    $("#option-1")[0].setAttribute('checked', true);
+  else
+    $("#option-2")[0].setAttribute('checked', true);
+}
+</script>

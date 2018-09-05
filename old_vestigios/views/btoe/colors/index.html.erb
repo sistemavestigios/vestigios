@@ -1,0 +1,91 @@
+<div id="search_colors">
+  <%= render "btoe/colors/search_colors" %>
+</div>
+
+<div id="pagination-itens">
+  <%= render "btoe/colors/list_colors" %>
+</div>
+
+<dialog id='dwnld-colors' class='mdl-dialog' style='width: 60%;'>
+  <h5 class='mdl-dialog__title'>Opções de download</h5>
+  <div class='mdl-dialog__content'>
+    <ul class='mdl-list'>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-excerpt-comments">
+            <input type="checkbox" id="show-excerpt-comments" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar comentários de trecho</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-color-comments">
+            <input type="checkbox" id="show-color-comments" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar comentários da cor</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item' style="display: none">
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-comment-comments">
+            <input type="checkbox" id="show-comment-comments" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar comentários de comentário</span>
+          </label>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class='mdl-dialog__actions'>
+    <button type='button' id='dwnld-pdf' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>
+      Download
+    </button>
+    <button type='button' class='close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' onclick="fechar_dialog('dwnld-colors')">
+      Cancelar
+    </button>
+  </div>
+</dialog>
+
+
+<%= link_to 'Nova Cor', new_btoe_color_path,
+            class: "button_margin mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent",
+            style: "position: absolute; right: 0; margin: 0% 5% 5% 0%;" %>
+
+<script>
+$("#show-color-comments")[0].addEventListener('change', function(){
+  if (this.checked) {
+    $("#show-comment-comments")[0].parentNode.parentNode.parentNode.removeAttribute('style')
+  } else{
+    $("#show-comment-comments")[0].parentNode.parentNode.parentNode.setAttribute('style', 'display:none');
+    $("#show-comment-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  }
+});
+
+function click_handle() {
+  fechar_dialog('dwnld-colors');
+  ajax({
+    type: 'get',
+    url: "/download_btoe_color",
+    data: {
+      color_id: "",
+      show_excerpt_comments: $("#show-excerpt-comments")[0].checked,
+      show_color_comments: $("#show-color-comments")[0].checked,
+      show_comment_comments: $("#show-comment-comments")[0].checked
+    },
+    sucess: "Arquivo enviado com sucesso",
+    error: "Algum erro impediu esse arquivo de ser baixado"
+  });
+  $("#show-excerpt-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-color-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-comment-comments")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#dwnld-pdf")[0].removeEventListener('click', click_handle);
+}
+
+function show_dialog() {
+  dialog = $("#dwnld-colors")[0];
+  dialog.showModal();
+  $("#dwnld-pdf")[0].addEventListener('click', click_handle);
+}
+
+$("#dwnld-tn-pdf")[0].addEventListener('click', show_dialog);
+</script>

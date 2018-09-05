@@ -1,0 +1,16 @@
+<div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<script>
+  function r(f) { /in/.test(document.readyState)? setTimeout('r('+f+')',9) : f() }
+  r(function() {
+    <% if flash.present? %>
+      <% flash.each do |_k, v| %>
+        var notification = document.querySelector('.mdl-snackbar');
+        var data = { message: '<%= v %>', timeout: 1500 };
+        notification.MaterialSnackbar.showSnackbar(data);
+      <% end %>
+    <% end %>
+  });
+</script>

@@ -1,0 +1,25 @@
+$("#pagination-itens").empty();
+$("#pagination-itens").html("<%= escape_javascript render partial: 'btoe/blocs/list_blocs' %>");
+$("#paginator").html("<%= escape_javascript(paginate(@btoe_blocs, remote: true)).to_s %>");
+componentHandler.upgradeDom(); // para os tooltips reaparecerem
+
+<% if  params[:page].nil? %>
+<% if @btoe_blocs.size > 1 %>
+  $("#blocs-info").html('Foram encontrados <%=@btoe_blocs.size%> blocos.');
+  notification = document.querySelector('.mdl-snackbar');
+  data = { message: "Foram encontrados <%=@btoe_blocs.size%> blocos.", timeout: 3000};
+  notification.MaterialSnackbar.showSnackbar(data);
+<% elsif @btoe_blocs.size == 0 %>
+  $("#blocs-info").html('Não foram encontrados blocos.');
+  notification = document.querySelector('.mdl-snackbar');
+  data = { message: "Não foram encontrados blocos.", timeout: 3000};
+  notification.MaterialSnackbar.showSnackbar(data);
+<% else %>
+  $("#blocs-info").html('Foi encontrado um bloco.');
+  notification = document.querySelector('.mdl-snackbar');
+  data = { message: "Foi encontrado 1 bloco.", timeout: 3000};
+  notification.MaterialSnackbar.showSnackbar(data);
+<% end %>
+<% end %>
+
+bind_accordion();

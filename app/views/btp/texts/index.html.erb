@@ -1,0 +1,9 @@
+<%= render 'search_texts' %>
+<div id="thematics">
+  <%= render 'list_card_thematics' if @btp_texts.empty? %>
+</div>
+<div id="pagination-items">
+  <%= render 'list_texts' unless @btp_texts.empty? %>
+</div>
+<%= link_to t('links.new', model: @btp_texts.klass.model_name.human), new_btp_text_path,
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>

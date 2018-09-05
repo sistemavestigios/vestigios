@@ -1,0 +1,111 @@
+<%= form_tag batale_definition_path(@batale_definition), remote: true, method: :get, id: 'batale_definition-search-form' do %>
+  <div class="paper-material mdl-card mdl-shadow--2dp"style="padding: 10px 24px 10px 24px">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">
+        Regra: <%= @batale_definition.regra %>
+      </h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      Exemplo: <%= @batale_definition.exemplo %> <br>
+      Palavra alvo: <%= @batale_definition.palavra_alvo %> <br>
+      Categoria: <%= @batale_definition.errortog_name %> <br>
+      <%= pluralize @batale_definition.texts.count, 'texto associado a essa definição de erro', 'textos associados a essa definição de erro' %>
+      <div id="text-info"></div>
+
+      <p>
+        Quantidade de textos por página:
+        <%= select_tag "per_page", options_for_select([5,10,15,20,25], params[:per_page].to_i) %>
+      </p>
+
+      <div id="search" class="accordion">
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :número_aluno, nil, class: "mdl-textfield__label", for: "input_n_aluno" %>
+          <%= text_field_tag :number_student, nil, class: "mdl-textfield__input", id: "input_n_aluno" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :idade, nil, class: "mdl-textfield__label", for: "input_idade" %>
+          <%= text_field_tag :age, nil, class: "mdl-textfield__input", id: "input_idade" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :sexo, nil, class: "mdl-textfield__label", for: "input_sexo" %>
+          <%= text_field_tag :gender, nil, class: "mdl-textfield__input", id: "input_sexo" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :número_estrato, nil, class: "mdl-textfield__label", for: "input_n_estrato" %>
+          <%= text_field_tag :numero_estrato, nil, class: "mdl-textfield__input", id: "input_n_estrato" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :número_coleta, nil, class: "mdl-textfield__label", for: "input_n_coleta" %>
+          <%= text_field_tag :collection, nil, class: "mdl-textfield__input", id: "input_n_coleta" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :número_texto, nil, class: "mdl-textfield__label", for: "input_n_texto" %>
+          <%= text_field_tag :number_text, nil, class: "mdl-textfield__input", id: "input_n_texto" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :ano_coleta, nil, class: "mdl-textfield__label", for: "input_ano_coleta" %>
+          <%= text_field_tag :year, nil, class: "mdl-textfield__input", id: "input_ano_coleta" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :tipo_de_texto, nil, class: "mdl-textfield__label", for: "input_tipo_texto" %>
+          <%= text_field_tag :type, nil, class: "mdl-textfield__input", id: "input_tipo_texto" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :escola_da_criança, nil, class: "mdl-textfield__label", for: "input_escola_crianca" %>
+          <%= text_field_tag :school, nil, class: "mdl-textfield__input", id: "input_escola_crianca" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :série, nil, class: "mdl-textfield__label", for: "input_serie" %>
+          <%= text_field_tag :school_grade, nil, class: "mdl-textfield__input", id: "input_serie" %>
+        </div>
+        <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+          <%= label_tag :turma, nil, class: "mdl-textfield__label", for: "input_turma" %>
+          <%= text_field_tag :class, nil, class: "mdl-textfield__input", id: "input_turma" %>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+      <%= button_tag(type: :submit,
+                id: "submit_form",
+                class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") do %>
+                Buscar
+      <% end %>
+      <button
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            id="button_expand_search"
+            onclick="expand_search();"
+            type="button">
+            Opções de busca
+      </button>
+      <button id="show-dialog" type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        style="margin: 0 10px 0 0">
+        Opções pdf
+      </button>
+      <%= render 'dialog_pdf_config' %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+$("#per_page").change(function() {
+  if(this.value){
+    $("#batale_definition-search-form").submit();
+  }
+});
+
+var expand_search = function(){
+  var botao = $("#button_expand_search");
+  var div_advanced_search = $("#search");
+  botao.empty();
+  div_advanced_search.slideToggle("fast");
+  if (div_advanced_search.hasClass('active')){
+    div_advanced_search.removeClass('active');
+    botao.html("Opções de busca");
+  }
+  else {
+    div_advanced_search.addClass("active");
+    botao.html("Ocultar opções");
+  }
+}
+
+</script>

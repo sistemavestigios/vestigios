@@ -1,0 +1,8 @@
+<%= render 'list_definitions', batale_definitions: @batale_errortog.definitions %>
+<%= render 'list_errortogs', batale_errortogs: @batale_errortog.child_errortogs %>
+
+<%= link_to t('links.edit'), edit_batale_errortog_path(@batale_errortog),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>
+
+<%= link_to t('links.new', model: Batale::Definition.model_name.human), new_batale_errortog_definition_path(@batale_errortog),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>

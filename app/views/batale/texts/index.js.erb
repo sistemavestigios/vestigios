@@ -1,0 +1,15 @@
+$('#pagination-items').empty();
+$('#strata').empty();
+$('#text-info').empty();
+<% if !@batale_texts.empty? %>
+  $("#pagination-items").html("<%= escape_javascript render 'list_texts' %>");
+  <% if @batale_texts.size > 1 %>
+    textCount = "Foram encontrados <%= @batale_texts.size %> textos.";
+  <% else %>
+    textCount = 'Foi encontrado 1 texto';
+  <% end %>
+  $('#text-info').html(textCount);
+<% else %>
+  $('#strata').html("<%= escape_javascript render 'list_card_strata' %>");
+  $('#text-info').html('Não foram encontrados textos');
+<% end %>

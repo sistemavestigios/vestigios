@@ -1,0 +1,15 @@
+<% @batale_texts.each do |batale_text| %>
+  <div class='card-text-accordion mdl-card mdl-shadow--2dp'>
+    <div class='texts-accordion'>
+      <h6 class='accordion'>Código: <%= batale_text.code || '(Vazio)' %></h6>
+      <div class='accordion'>
+        <p> Texto da criança:</p>
+        <p><%= batale_text.original %></p>
+        <div class="mdl-card__actions mdl-card--border">
+          <%= card_action_icons(batale_text, edit_batale_text_path(batale_text), batale_text) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div align='center'><%= paginate @batale_texts, remote: true %></div>

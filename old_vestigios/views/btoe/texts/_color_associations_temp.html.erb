@@ -1,0 +1,23 @@
+<% if @associated_colors_and_excerpts.size > 0 %>
+  <div id="color-associations-temp" class="mdl-cell mdl-cell--6-col">
+    <div class="mdl-card mdl-shadow--2dp cards_show_btoe_text">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">
+          Trechos com cores associadas
+        </h2>
+      </div>
+
+      <div id="marked-text" class="mdl-card__supporting-text">
+        <% puts "marked_text: " + params.to_json %>
+        <%= raw @marked_text %> <%# @btoe_text %>
+      </div>
+
+      <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                onclick="clearAllMarkedColors();">
+          Limpar
+        </button>
+      </div>
+    </div>
+  </div>
+<% end %>

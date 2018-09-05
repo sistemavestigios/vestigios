@@ -1,0 +1,33 @@
+<div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">
+      Nome do Bloco: <%= @batale_bloc.nome %>
+    </h2>
+  </div>
+
+  <div class="mdl-card__supporting-text">
+    <% if @batale_bloc.excerpts.count > 0 %>
+      <ul style="margin: 0px;">
+        <% @batale_bloc.excerpts.each_with_index do |e,index| %>
+          <li><p><strong>Trecho vindo de <%= @batale_texts[index].codigo_texto%>: </strong><%= e.trecho %></p><%= link_to "Texto Original", batale_text_path(e.text_id), style: "color: rgba(0,0,0,0.54);" %> <%= link_to "Excluir trecho",
+                      deleteBataleBlocExcerpt_path,
+                      style: "color: rgba(0,0,0,0.54);",
+                      remote: true,
+                      method: :delete, data: { params: { bloc_id: @batale_bloc.id.to_s, excerpt_id: e.id.to_s }, confirm: 'Are you sure?' } %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <h6> Ainda não existem trechos nesse bloco. </h6>
+    <% end %>
+  </div>
+
+  <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            onclick="location.href='<%= edit_batale_bloc_path(@batale_bloc) %>'">
+      Editar Bloco
+    </button>
+  </div>
+</div>
+
+
+</div>

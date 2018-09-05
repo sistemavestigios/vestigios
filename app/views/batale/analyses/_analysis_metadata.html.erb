@@ -1,0 +1,55 @@
+<span id="analysis_label">
+  <h5><span id="analysis_label_text"><%= @analysis.label.present? ? @analysis.label : 'Análise sem nome' %></span>
+
+  <%=link_to raw("<i class='material-icons'>"+ (@analysis.favorite ? 'star' : 'star_border') + "</i>"),
+                batale_analysis_path(@analysis, favorite: !@analysis.favorite),
+                class: "mdl-button mdl-js-button mdl-button--icon mdl-button--colored",
+                method: :put, remote: true
+  %>
+  </h5>
+</span>
+<script>
+  $("#analysis_label > h5").hover(function() {
+    if($("#label_text_area").size() < 1) {
+      $(this).append( `<button id='btn-edit-label' onclick=edit_label() class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>
+                      <i class='material-icons' style='padding-right: 2px;'>edit</i>
+                    </button>` );
+    }
+  }, function() {
+    $('#btn-edit-label').remove();
+    // $( this ).find( "br:last" ).remove();
+  });
+
+  function edit_label(){
+    console.log($('#analysis_label_text')[0].innerText);
+    $("#btn-edit-label").remove();
+    $("#analysis_label > h5").append(`
+      <div id=edit-label>
+        <br>
+        <textarea id='label_text_area'>${$('#analysis_label_text')[0].innerText}</textarea>
+        <button onclick=cancel_edit_label()>Cancelar</button>
+        <button onclick=save_edit_label()>Salvar</button>
+      </div>
+      `)
+    $("#label_text_area").focus();
+  }
+
+  function cancel_edit_label(){
+    // $('#edit-label').remove();
+    $('#btn-edit-label').remove();
+    $("#analysis_label > h5").find( 'div:last' ).remove();
+  }
+
+  function save_edit_label(){
+    console.log('save');
+    $.ajax({
+      method: "PUT",
+      url: '<%#= batale_analysis_path @analysis %>',
+      data: { analysis_id: '<%= @analysis.id %>', label: $("#label_text_area").val() },
+      // beforeSend: (() => { console.log('before');show_spinner()})
+    }).done(function( msg ) {
+        console.log("success");
+        // hide_spinner();
+      });
+  }
+</script>

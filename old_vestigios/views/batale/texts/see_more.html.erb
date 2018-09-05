@@ -1,0 +1,111 @@
+<%= render "batale/texts/search_texts" %>
+
+<div id="pagination-itens">
+  <%= render partial: "batale/texts/list_texts" %>
+</div>
+
+<dialog id='dwnld-text' class='mdl-dialog' style='width: 60%;'>
+  <h5 class='mdl-dialog__title'>Opções de download</h5>
+  <div class='mdl-dialog__content'>
+    <ul class='mdl-list'>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-header">
+            <input type="checkbox" id="show-header" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Cabeçalho</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-codigo-texto">
+            <input type="checkbox" id="show-codigo-texto" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Código do Texto</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-texto-original">
+            <input type="checkbox" id="show-texto-original" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Texto Original</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-texto-normatizado">
+            <input type="checkbox" id="show-texto-normatizado" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Texto Normatizado</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item' style="display:none">
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-text-label">
+            <input type="checkbox" id="show-text-label" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar "Texto Original/Normatizado" antes do texto</span>
+          </label>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class='mdl-dialog__actions'>
+    <button type='button' id='dwnld-pdf' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' disabled>
+      Download
+    </button>
+    <button type='button' class='close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' onclick="fechar_dialog('dwnld-text')">
+      Cancelar
+    </button>
+  </div>
+</dialog>
+
+<script>
+$("#dwnld-tn-pdf")[0].removeAttribute('disabled');
+$("#dwnld-tn-pdf")[0].setAttribute('style', 'color: rgba(255,152,0, 0.9)');
+$("#dwnld-tn-pdf")[0].addEventListener('click', open_dialog);
+$("#show-texto-original")[0].addEventListener('change', show_bttn_dwnld);
+$("#show-texto-normatizado")[0].addEventListener('change', show_bttn_dwnld);
+
+function click_handle() {
+  fechar_dialog('dwnld-text');
+  ajax({
+    type: 'get',
+    url: "/download_batale_tns",
+    data: {
+      show_header: $("#show-header")[0].checked,
+      show_codigo_texto: $("#show-codigo-texto")[0].checked,
+      show_texto_original: $("#show-texto-original")[0].checked,
+      show_texto_normatizado: $("#show-texto-normatizado")[0].checked,
+      show_text_label: $("#show-text-label")[0].checked
+    },
+    sucess: "Arquivo enviado com sucesso",
+    error: "Algum erro impediu esse arquivo de ser baixado"
+  });
+  $("#show-header")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-codigo-texto")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-texto-original")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-texto-normatizado")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-text-label")[0].parentNode.MaterialCheckbox.uncheck();
+  $("#show-text-label")[0].parentNode.parentNode.parentNode.setAttribute('style', 'display:none');
+  $("#dwnld-pdf")[0].setAttribute('disabled', true);
+  $("#dwnld-pdf")[0].removeEventListener('click', click_handle);
+}
+
+function open_dialog() {
+  dialog = $("#dwnld-text")[0];
+  dialog.showModal();
+  $("#dwnld-pdf")[0].addEventListener('click', click_handle);
+}
+
+function show_bttn_dwnld() {
+  if($("#show-texto-original")[0].checked || $("#show-texto-normatizado")[0].checked) {
+    $("#dwnld-pdf")[0].removeAttribute('disabled');
+    $("#show-text-label")[0].parentNode.parentNode.parentNode.removeAttribute('style');
+  } else {
+    $("#dwnld-pdf")[0].setAttribute('disabled', true);
+    $("#show-text-label")[0].parentNode.parentNode.parentNode.setAttribute('style', 'display:none');
+  }
+}
+
+</script>

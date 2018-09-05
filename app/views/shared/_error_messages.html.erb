@@ -1,0 +1,18 @@
+<% if obj.errors.any? %>
+  <div class="paper-material mdl-card mdl-shadow--2dp" id="error_explanation">
+    <div class='mdl-card__title'>
+      <h2 class="mdl-card__title-text">
+        <%= t('errors.template.header', count: obj.errors.size, model: t("mongoid.models.#{obj.class.to_s.underscore}"))%>
+      </h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <h5> <%= t('errors.template.body', count: obj.errors.size)%></h5>
+      <% obj.errors.full_messages.each do |message| %>
+        <ul>
+          <li><%= message %></li>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+  <br>
+<% end %>

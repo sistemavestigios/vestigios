@@ -1,0 +1,29 @@
+<%= render 'shared/error_messages', obj: batale_errortog %>
+<div class='paper-material mdl-card mdl-shadow--2dp'>
+  <div class='mdl-card__title'>
+    <h2 class='mdl-card__title-text'>
+      <% if batale_errortog.new_record? %>
+        Novo <%= batale_errortog.model_name.human %>
+      <% else %>
+        Editando <%= "#{batale_errortog.model_name.human}: #{batale_errortog.name}" %>
+      <% end %>
+    </h2>
+  </div>
+  <%= form_with(model: batale_errortog, local: true) do |form| %>
+    <div class='mdl-card__supporting-text'>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= form.label :name, class: 'mdl-textfield__label' %>
+        <%= form.text_field :name, class: 'mdl-textfield__input' %>
+      </div>
+      <h3><%= 'Subcategorias:' if batale_errortog.child_errortogs.present? %></h3>
+      <%= render 'child_errortogs_fields', form: form %>
+      <h3><%= Batale::Definition.model_name.human.pluralize + ':' if batale_errortog.definitions.present? %></h3>
+      <%= render 'definitions_fields', form: form  %>
+    </div>
+    <div class='mdl-card__actions mdl-card--border'>
+      <%= form.submit class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= link_to t('links.back'), request.referer ||  batale_errortogs_path,
+          class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    </div>
+  <% end %>
+</div>

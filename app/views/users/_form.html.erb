@@ -1,0 +1,24 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <%= render 'shared/error_messages', obj: user %>
+  <p>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </p>
+  <p>
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+  </p>
+  <% if current_user.admin? && current_user.can_change_role_for_user?(user) %>
+    <p>
+      <%= form.label :role %>
+      <%= form.select :role_id, Role.all.map{ |r| [r.name, r.id] }, include_blank: true %>
+    </p>
+  <% end %>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

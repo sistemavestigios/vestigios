@@ -1,0 +1,31 @@
+<div class="paper-material mdl-card mdl-shadow--2dp forbidden">
+  <!-- style='padding: 1px 10px;margin: 10px 15px 10px 25px;' -->
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col"> <!-- style='text-align: center;' -->
+      <img width="250" height="250" src="/assets/system/denied.png" style="margin:20px">
+    </div>
+    <div class="mdl-cell mdl-cell--8-col" style='text-align: left;'>
+      <h1 style="margin-top:40px">Você não tem acesso a esse programa</h1>
+      <p style="font-family:Roboto">
+        <%="Por favor entre em contato com o administrador do sistema ou retorne a página inicial do sistema."%>
+      </p>
+      <h2 style="margin-top:40px">Por que o acesso foi negado</h2>
+      <p style="font-family:Roboto">
+        O acesso aos programas são controlados pelo sistema para que acessos indevidos não sejam realizados. Se você deseja acessar esse recurso entre com contato com a administração.
+      </p>
+      <p style="margin: 60px 20px 20px 0px">
+        <%= link_to raw("<i class='material-icons' style='padding-right: 2px;'>arrow_back</i>Voltar a Dashboard"),
+          dashboard_path,
+          class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent",
+          onclick: "try{ga('send', 'event', 'atHome', 'forbiddenBackDashboard')}catch(exception){};location.href='/'",
+          method: :get %>
+        <%= button_to "Voltar a Dashboard",
+                      dashboard_path,
+                      class:"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent",
+                      method: :get,
+                      onclick: "try{ga('send', 'event', 'atHome', 'forbiddenBackDashboard')}catch(exception){};"
+        %>
+      </p>
+    </div>
+  </div>
+</div>

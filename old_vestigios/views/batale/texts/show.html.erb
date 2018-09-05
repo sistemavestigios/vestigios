@@ -1,0 +1,171 @@
+<%= render partial: "shared/next_and_previous_buttons" %>
+<br>
+<br>
+<br>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--6-col">
+    <%= render 'original_text', batale_text: @batale_text %>
+  </div>
+  <div class="mdl-cell mdl-cell--6-col">
+    <%= render 'normalized_text', batale_text: @batale_text %>
+  </div>
+</div>
+</div>
+
+<div id="texto_id" style="display: none"><%= @batale_text.id %></div>
+<%# TODO: melhorar visualização da imagem %>
+<%#= image_tag(@batale_text.image.url, size: '300x300') if @batale_text.image? %>
+
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--6-col">
+    <div class="paper-material mdl-card mdl-shadow--2dp" >
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">
+          Trecho selecionado
+        </h2>
+      </div>
+
+      <div id="selected-text" class="mdl-card__supporting-text white-space-pre">
+        Selecione o trecho no texto acima e clique em "Enviar Seleção"
+      </div>
+
+      <div class="mdl-card__actions mdl-card--border">
+        <button id="open_add_to_bloc_dialog" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>
+          Adicionar a um bloco
+        </button>
+        <button id="open_create_bloc_dialog" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Criar bloco
+        </button>
+        <button id="open_associate_definition_dialog" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>
+          Associar trecho a uma definição
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-cell mdl-cell--6-col">
+    <%= render 'show_text_definitions' %>
+  </div>
+</div>
+
+<%= render "dialog_add_to_bloc" %>
+<%= render "dialog_create_bloc" %>
+
+<%= create_dialog_new_definition 'dialog_new_definition',
+                                 'Nova Definição',
+                                 ['Regra', 'Exemplo', 'Palavra_alvo'],
+                                 @batale_errortogs
+                                 %>
+
+<script>
+
+$('#Regra')[0].addEventListener('input', enableDisableButton);
+$('#Exemplo')[0].addEventListener('input', enableDisableButton);
+$('#Palavra_alvo')[0].addEventListener('input', enableDisableButton);
+$('#select_categoria')[0].addEventListener('change', enableDisableButton)
+
+function enableDisableButton(){
+  count = 0;
+  $('#dialog_new_definition input').each(function() {
+    if (this.value != '') count += 1;
+  });
+  count == 3 && $('#select_categoria').val() != ""
+    ? $('#dialog_definition_bttn')[0].removeAttribute('disabled')
+    : $('#dialog_definition_bttn')[0].setAttribute('disabled', 'true');
+}
+
+
+register_show_dialog_event("dialog_add_to_bloc", "open_add_to_bloc_dialog");
+register_show_dialog_event("dialog_create_bloc", "open_create_bloc_dialog");
+register_show_dialog_event("dialog_new_definition", "new_definition_bttn");
+register_show_dialog_event("dialog-associate-definition", "open_associate_definition_dialog");
+
+function updateTextoNormatizado() {
+  ajax({
+    type: 'PUT',
+    url: '/updateTextoNormatizado',
+    data: { id: '<%= @batale_text.id %>', texto_normatizado: $('#texto-normatizado')[0].value.trim()},
+    success: "Texto editado com sucesso.",
+    error: "Falha ao editar o texto."
+  });
+}
+
+function getSelectionText() {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+
+    if(text != ""){
+      $("#selected-text")[0].innerHTML =
+        "<ul class=\"mdl-list\">"+
+        "<li class=\"mdl-list__item\">"+
+        "<span class=\"mdl-list__item-primary-content\">"+text+"</span>"+
+        "<span class=\"mdl-list__item-secondary-action\">"+
+          "<button class=\"mdl-button mdl-js-button mdl-button--icon mdl-button--colored\">"+
+            "<i class=\"material-icons\">cancel</i>"+
+          "</button></span></li>"+
+        "</ul>";
+      notification = document.querySelector('.mdl-snackbar');
+      data = { message: "Trecho selecionado", timeout: 1500};
+      notification.MaterialSnackbar.showSnackbar(data);
+      $("#open_associate_definition_dialog")[0].disabled = false;
+      $("#open_add_to_bloc_dialog")[0].disabled = false;
+      $("#palavra-errada")[0].value = text;
+      css = $("#palavra-errada")[0].parentElement.getAttribute('class');
+      $("#palavra-errada")[0].parentElement.setAttribute('class', css + ' is-dirty');
+    }
+    $("#selected-text ul").click(function(event){
+      //quando clica na lista de trechos selecionados
+      if($(event.target).is('i.material-icons')) {
+        //e o alvo foi o botão de deletar
+        // i.material-icons -> button -> span -> li
+        event.target.parentNode.parentNode.parentNode.replaceWith("");
+        //pega o li que ele está contido e o deleta
+        //coloca o placeholder de novo
+        $("#selected-text").html("Selecione o trecho no texto acima e clique em \"Enviar Seleção\"");
+        $("#open_associate_definition_dialog")[0].disabled = true;
+        $("#open_add_to_bloc_dialog")[0].disabled = true;
+        $("#palavra-errada")[0].value = "";
+        $("#palavra-correta")[0].value = "";
+      }
+    });
+}
+
+function saveToBloc(batale_bloc) {
+  console.log(batale_bloc);
+  trecho = $("#selected-text")[0].innerHTML.trim();
+  //get the selection from the other div
+
+  console.log(trecho);
+  if (trecho === "") {
+    // $("#toast_bloco")[0].open();
+    console.log("trecho vazio");
+  }
+  else {
+    ajax({
+      type: 'POST',
+      url: "/saveToBataleBloc",
+      data: { batale_bloc: batale_bloc, trecho: trecho, text_id: text_id = $("#texto_id")[0].innerHTML },
+      success:"Trecho associado ao bloco com sucesso",
+      error: "Algum erro previniu o trecho de ser associado ao bloco"
+    });
+  }
+}
+
+function createBloc() {
+  if (name != "") {
+    ajax({
+      type:'POST',
+      url:'/createBataleBloc',
+      data: { name: $('#bloc_name')[0].value, desc: $('#bloc_description')[0].value },
+      success: "Bloco criado com sucesso",
+      error: "Algum erro previniu o bloco de ser criado"
+    });
+  }
+  else {
+    console.log("nome do bloco vazio");
+  }
+}
+</script>

@@ -1,0 +1,22 @@
+<%= form_for(batale_errortog) do |f| %>
+  <%= render 'shared/errors', obj: batale_errortog %>
+
+  <div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+    <div>
+      <% unless action_name == 'edit' %>
+        <br>
+        &ensp; Categoria Pai:
+        <%= f.select :parent_errortog, @batale_errortogs.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+      <% end %>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :name, class: "mdl-textfield__label", for: "input_name"%>
+        <%= f.text_field :name, class: "mdl-textfield__input", id: "input_name"%>
+      </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0">
+      <%= link_to 'Voltar', batale_errortogs_path, class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+      <%= f.submit "Salvar",
+                    class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"%>
+    </div>
+</div>
+<% end %>

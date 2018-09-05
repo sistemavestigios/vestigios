@@ -1,0 +1,81 @@
+pt-BR:
+  mongoid:
+    models:
+      analysis:                'Análise'
+      batale/definition:       'Erro'
+      batale/errortog:         'Categoria de erros'
+      batale/stratum:          'Estrato'
+      batale/text:             'Texto'
+      btp/bloc:                'Bloco'
+      btp/color:
+        one:                   'Cor'
+        other:                 'Cores'
+      btp/comment:             'Comentário'
+      btp/excerpt:             'Trecho'
+      btp/text:                'Texto'
+      user:                    'Usuário'
+    attributes:
+      batale/definition:
+        errortog:              'Categoria de erro'
+        example:               'Exemplo'
+        rule:                  'Regra'
+        target_word:           'Palavra alvo'
+      batale/errortog:
+        child_errortogs:       'Subcategorias'
+        name:                  'Nome'
+        definitions:           'Erros'
+      batale/stratum:
+        collected_material:    'Material Coletado'
+        collection_grades:     'Série/Ano'
+        collection_type:       'Tipo de Coleta'
+        collection_year:       'Ano da Coleta'
+        quantity:              'Número de Textos'
+        region:                'Local da Coleta'
+        schools:               'Escola(s)'
+        stratum_number:        'Número do Estrato'
+      batale/text:
+        code:                  'Código do texto'
+        collection_number:     'Número da coleta'
+        collection_year:       'Ano da coleta'
+        normalized:            'Texto normatizado'
+        original:              'Texto original'
+        stratum_number:        'Número do estrato'
+        student_age:           'Idade'
+        student_class:         'Turma'
+        student_grade:         'Série'
+        student_name:          'Nome da criança'
+        student_number:        'Número do aluno'
+        student_school:        'Escola da criança'
+        student_sex:           'Sexo'
+        student_text_number:   'Número do texto'
+        type:                  'Tipo de texto'
+        writing_type:          'Tipo de escrita'
+      btp/bloc:
+        description:           'Descrição'
+        name:                  'Nome'
+        secret:                'Privado'
+        user_id:               'Usuário'
+      btp/color:
+        hex_color:             'Cor (em hexademacimal)'
+        tag:                   'Nome associado a cor'
+        user_id:               'Usuário'
+      btp/comment:
+        comment:               'Comentário'
+        user_id:               'Usuário'
+      btp/excerpt:
+        excerpt:               'Trecho'
+        text_id:               'Texto'
+        user_id:               'Usuário'
+      btp/text:
+        acronym:               'Sigla'
+        class_number:          'Turma'
+        code:                  'Código do texto'
+        full:                  'Texto completo'
+        region:                'Pólo'
+        teacher_number:        'Número da professora'
+        year:                  'Ano'
+      user:
+        email:                 'Email'
+        name:                  'Nome'
+        password:              'Senha'
+        password_confirmation: 'Confirmação de Senha'

@@ -1,0 +1,27 @@
+<% @btoe_texts.each_with_index do |btoe_text, i| %>
+  <div class="card-text-accordeon mdl-card mdl-shadow--2dp" >
+    <div class="texts-accordeon">
+      <h6 class="accordion">
+        Código: <%= btoe_text.codigo_texto || "(Vazio)" %>
+      </h6>
+      <div class="accordion" style="padding-bottom:16px">
+        <% if not @destacados.nil? and not @destacados[i].nil? %>
+          <p> Texto completo:</p>
+          <p><%= raw @destacados[i] %></p>
+        <% else %>
+          <p> Texto completo:</p>
+          <p><%= btoe_text.texto_full %></p>
+        <% end %>
+        <hr>
+        <%= create_card_action_icons(
+                  btoe_text_path(btoe_text, request.query_parameters),
+                  edit_btoe_text_path(btoe_text),
+                  btoe_text,
+                  "Deseja realmente deletar este texto?" )%>
+
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div id="paginator" align="center"><%= paginate(@btoe_texts, remote: true) %></div>

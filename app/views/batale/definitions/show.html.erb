@@ -1,0 +1,10 @@
+<%= render 'search_texts' %>
+
+<div id="pagination-items">
+  <%= render 'list_associated_texts' %>
+</div>
+
+<%= link_to t('links.edit'), edit_batale_definition_path(@batale_definition),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>
+<%= link_to t('links.back'), batale_errortog_path(@batale_definition.errortog_id),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>

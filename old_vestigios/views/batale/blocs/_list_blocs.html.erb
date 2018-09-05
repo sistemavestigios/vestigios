@@ -1,0 +1,26 @@
+<% @batale_blocs.each do |batale_bloc| %>
+  <div class="card-blocs mdl-card mdl-shadow--2dp" style="padding: 10px 24px 0px 24px">
+    <div class="mdl-card__title ">
+      <strong><%= batale_bloc.nome %></strong>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <p><%= batale_bloc.descricao %></p>
+      <% if batale_bloc.excerpts.count > 0 %>
+        <p><%= "Este bloco contém " + pluralize(batale_bloc.excerpts.count, "trecho associado.", "trechos associados.")%></p>
+      <% else %>
+        <p>Este bloco ainda não possui nenhum trecho associado.</p>
+      <% end %>
+      <hr>
+      <div class="icons-card-blocs">
+        <%= create_card_action_icons(
+                    batale_bloc,
+                    edit_batale_bloc_path(batale_bloc),
+                    batale_bloc,
+                    "Deseja realmente deletar este bloco?"
+        ) %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div id="paginator" align="center"><%= paginate(@batale_blocs, remote: true) %></div>

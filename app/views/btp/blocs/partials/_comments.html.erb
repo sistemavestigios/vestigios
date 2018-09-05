@@ -1,0 +1,11 @@
+<ul>
+  <% @btp_bloc.comments.each do |comment| %>
+    <li>
+      <p>
+        <strong>Comentário de <%= comment.user.full_name %>: </strong>
+        <span id= "comment-<%= comment.id %>"> <%= comment.comment %></span>
+        <%= comment_icons comment, comment.id %>
+      </p>
+    </li>
+  <% end %>
+</ul>

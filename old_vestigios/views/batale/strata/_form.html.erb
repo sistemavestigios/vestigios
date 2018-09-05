@@ -1,0 +1,54 @@
+<%= form_for(batale_stratum) do |f| %>
+  <%= render 'shared/errors', obj:batale_stratum %>
+
+  <div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px" >
+    <div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-medium_size">
+        <%= f.label :numero_estrato, class: "mdl-textfield__label", for: "input_numero_estrato"%>
+        <%= f.number_field :numero_estrato, class: "mdl-textfield__input", id: "input_numero_estrato"%>
+      </div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-medium_size">
+        <%= f.label :quantidade_de_textos, class: "mdl-textfield__label", for: "input_quantidade_de_textos"%>
+        <%= f.number_field :quantidade_de_textos, class: "mdl-textfield__input", id: "input_quantidade_de_textos"%>
+      </div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-medium_size">
+        <%= f.label :local_coleta, class: "mdl-textfield__label", for: "input_local_coleta"%>
+        <%= f.text_field :local_coleta, class: "mdl-textfield__input", id: "input_local_coleta"%>
+      </div>
+    </div>
+    <div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-full_size">
+        <%= f.label :ano_coleta, class: "mdl-textfield__label", for: "input_ano_coleta"%>
+        <%= f.text_field :ano_coleta, class: "mdl-textfield__input", id: "input_ano_coleta"%>
+      </div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-full_size">
+        <%= f.label :material_coletado, class: "mdl-textfield__label", for: "input_material_coletado"%>
+        <%= f.text_field :material_coletado, class: "mdl-textfield__input", id: "input_material_coletado"%>
+      </div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-full_size">
+        <%= f.label :tipo_coleta, class: "mdl-textfield__label", for: "input_tipo_coleta"%>
+        <%= f.text_field :tipo_coleta, class: "mdl-textfield__input", id: "input_tipo_coleta"%>
+      </div>
+    </div>
+    <div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-full_size">
+        <%= f.label :escola, class: "mdl-textfield__label", for: "input_escola"%>
+        <%= f.text_field :escola, class: "mdl-textfield__input", id: "input_escola"%>
+      </div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label stratum-form-full_size">
+        <%= f.label :serie_ano_coleta, class: "mdl-textfield__label", for: "input_serie_ano_coleta"%>
+        <%= f.text_field :serie_ano_coleta, class: "mdl-textfield__input", id: "input_serie_ano_coleta"%>
+      </div>
+    </div>
+
+
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+      <%= link_to 'Voltar', 'javascript:history.go(-1);',
+        class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+
+      <%= f.submit "Salvar",
+        class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+    </div>
+  </div>
+
+<% end %>

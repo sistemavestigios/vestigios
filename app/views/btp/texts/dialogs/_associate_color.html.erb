@@ -1,0 +1,22 @@
+<dialog id="dialog_associate_color" class="mdl-dialog excerpt-association">
+  <h5 class="mdl-dialog__title">Associar a uma cor</h5>
+  <div class="mdl-dialog__content"> Selecione a cor.
+    <% @btp_colors.each do |color| %>
+      <div onclick="Texts.associateColor('<%= color.id %>')">
+        <h5><%= color.tag %></h5>
+      </div>
+    <% end %>
+    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-also-create-bloc">
+      <input type="checkbox" id="checkbox-also-create-bloc" class="mdl-checkbox__input">
+      <span class="mdl-checkbox__label">Também associar a bloco de mesmo nome</span>
+    </label>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Associar
+    </button>
+    <button type="button" class="close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Cancelar
+    </button>
+  </div>
+</dialog>

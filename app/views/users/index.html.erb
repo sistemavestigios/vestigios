@@ -1,0 +1,22 @@
+<h1>Usuários</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th colspan="2">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to t('links.edit'), edit_user_path(user) %></td>
+        <td><%= link_to t('links.delete'), user, method: :delete, data: { confirm: t('links.confirm') } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<%= link_to t('links.new', model: User.model_name.human), new_user_path %>

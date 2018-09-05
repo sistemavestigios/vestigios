@@ -1,0 +1,60 @@
+<%= render 'shared/next_and_previous_buttons' %>
+
+<%= render 'original_text', btp_text: @btp_text %>
+
+<div class='mdl-grid'>
+  <div class='mdl-cell mdl-cell--6-col'>
+    <%= render 'selected_excerpt' %>
+  </div>
+  <div class='mdl-cell mdl-cell--6-col'>
+    <%= render 'associated_colors', batale_text: @batale_text %>
+  </div>
+</div>
+
+<!-- hidden inputs for ajax -->
+<input type="hidden" value="<%= @btp_text.id %>"     id="btp_text_id">
+<input type="hidden" value="<%= current_user.id %>"  id="current_user_id">
+<input type="hidden" value="<%= btp_blocs_path %>"   id="update_bloc_url">
+<input type="hidden" value="<%= btp_colors_path %>"  id="update_color_url">
+
+<div class="mdl-grid">
+  <%# if @associated_blocs.size > 0 %>
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-card mdl-shadow--2dp paper-material">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text"> Blocos relacionados com o texto </h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <ul class="associated_blocs">
+            <% @associated_blocs.each do |bloc| %>
+              <%= new_li_bloc(bloc) %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-card mdl-shadow--2dp paper-material">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text"> Contagem de palavras do texto </h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <%#= column_chart @dados  %>
+        </div>
+      </div>
+    </div>
+  <%# elsif @dados %>
+    <!-- <div class="mdl-card mdl-shadow--2dp cards_show_btoe_text">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">
+          Contagem de palavras do texto
+        </h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <%#= column_chart @dados  %>
+      </div>
+    </div> -->
+  <%# end %>
+</div>
+<!-- dialogs -->
+<%= render 'btp/texts/dialogs/text_info', btp_text: @btp_text %>

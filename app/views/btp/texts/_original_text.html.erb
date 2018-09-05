@@ -1,0 +1,37 @@
+<div class="paper-material mdl-card mdl-shadow--2dp margin-top">
+  <div class="card-text-title mdl-card__title">
+    <h2 class="mdl-card__title-text"> Código: <%= btp_text.code || "(Vazio)" %> </h2>
+  </div>
+  <div class="mdl-card__menu card-menu-button">
+    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect js-button" id="text_<%= btp_text.id %>">
+      <i class="material-icons" >info</i>
+    </button>
+  </div>
+  <div class="card-text-full-text mdl-card__supporting-text">
+    <%= btp_text.full %>
+    <p id="selectable-text" class="white-space-pre"><%#= raw @marked_text[:user] %></p>
+  </div>
+  <div class=" mdl-card__actions mdl-card--border">
+    <%# TODO: analysis %>
+    <%#= link_to 'Análise', dashboard_path, class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <button class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect selection-bttn" onclick="Texts.getSelectionText();" disabled>
+      Enviar Seleção
+    </button>
+    <%= link_to 'Editar', edit_btp_text_path(btp_text), class: " mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <%= link_to 'Excluir', btp_text,
+                          method: :delete,
+                          data: { confirm: 'Deseja realmente excluir o texto?' },
+                          class: "mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" %>
+    <%#= link_to raw("<i class='material-icons'>picture_as_pdf</i>"),
+          print_btp_text_path(@btp_text),
+          :target => '_blank',
+          style: "color: rgba(255,152,0, 0.9);",
+          id: 'ttpdf' %>
+  </div>
+</div>
+<div class="mdl-tooltip" data-mdl-for="ttpdf">
+  Download <strong>PDF</strong>
+</div>
+<div class="mdl-tooltip mdl-tooltip--large" for="show-dialog-more-info">
+  Mais informações
+</div>

@@ -1,0 +1,26 @@
+<% @batale_texts.each_with_index do |batale_text, i| %>
+  <div class="card-text-accordeon mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+    <div class="texts-accordeon">
+      <h6 class="accordion">
+        Código: <%= batale_text.codigo_texto || "(Vazio)" %>
+      </h6>
+      <div class="accordion">
+        <% if not @destacados.nil? and not @destacados[i].nil? %>
+          <p> Texto da criança:</p>
+          <p><%= raw @destacados[i] %></p>
+        <% else %>
+          <p> Texto da criança:</p>
+          <p><%= batale_text.texto_original %></p>
+        <% end %>
+        <hr>
+        <%= create_card_action_icons(
+                  batale_text_path(batale_text, request.query_parameters),
+                  edit_batale_text_path(batale_text),
+                  batale_text,
+                  "Deseja realmente deletar este texto?" ) %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div id="paginator" align="center"><%= paginate(@batale_texts, remote: true) %></div>

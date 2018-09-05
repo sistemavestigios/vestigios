@@ -1,0 +1,15 @@
+<% @btp_texts.each do |btp_text| %>
+  <div class='card-text-accordion mdl-card mdl-shadow--2dp'>
+    <div class='texts-accordion'>
+      <h6 class='accordion'>Código: <%= btp_text.code || '(Vazio)' %></h6>
+      <div class='accordion'>
+        <p> Texto da professora:</p>
+        <p><%= btp_text.full %></p>
+        <div class="mdl-card__actions mdl-card--border">
+          <%= card_action_icons(btp_text, edit_btp_text_path(btp_text), btp_text) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div align='center'><%= paginate @btp_texts, remote: true %></div>

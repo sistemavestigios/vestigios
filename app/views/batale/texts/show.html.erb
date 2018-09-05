@@ -1,0 +1,31 @@
+<%= render 'shared/next_and_previous_buttons' %>
+
+<div class='mdl-grid'>
+  <div class='mdl-cell mdl-cell--6-col'>
+    <%= render 'original_text', batale_text: @batale_text %>
+  </div>
+  <div class='mdl-cell mdl-cell--6-col'>
+    <%= render 'normalized_text', batale_text: @batale_text %>
+  </div>
+</div>
+<div class='mdl-grid'>
+  <div class='mdl-cell mdl-cell--6-col'>
+    <div class='paper-material mdl-card mdl-shadow--2dp' >
+      <div class='mdl-card__title'><h2 class='mdl-card__title-text'>Trecho selecionado</h2></div>
+      <div id='selected-text' class='mdl-card__supporting-text'>
+        Selecione o trecho no texto acima e clique em 'Enviar Seleção'
+        <br><br><br>
+      </div>
+      <div class='mdl-card__actions mdl-card--border'>
+        <button id='open_associate_definition_dialog' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' disabled>
+          Associar trecho a uma definição
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class='mdl-cell mdl-cell--6-col'>
+    <%= render 'text_definitions' %>
+  </div>
+</div>
+<!-- dialogs -->
+<%= render 'batale/texts/dialogs/text_info', batale_text: @batale_text %>

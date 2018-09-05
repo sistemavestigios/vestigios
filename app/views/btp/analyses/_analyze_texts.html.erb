@@ -1,0 +1,91 @@
+<h6>Um total de <%= pluralize(@info['texts_count'], 'texto foi analisado', 'textos foram analisados') %>, contendo <%= pluralize(@info['words_count'].token_count, 'palavra', 'palavras') %> (excluindo stop words).</h6>
+<h6>Pertencem a <%= pluralize(@info['class_number_pluck'].count, 'turma', 'turmas') %>, <%= pluralize(@info['region_pluck'].count, 'pólo', 'pólos diferentes') %> e <%= pluralize(@info['acronym_pluck'].count, 'temática', 'temáticas diferentes') %></h6>
+<% if @info['year_pluck'].count > 1 %>
+  <h6>Foram coletados entre <%= @info['year_pluck'].min %> e <%= @info['year_pluck'].max %>.
+<% else %>
+  <h6>Foram coletados em <%= @info['year_pluck'].first %>.</h6>
+<% end %>
+
+<% @info['word_occurrences_strict'].each do |word, count| %>
+<h6> A palavra "<%= word %>" foi estritamente encontrada <%= pluralize(count, 'vez', 'vezes') %> nos textos analisados.</h6>
+<% end %>
+<% @info['word_occurrences_match'].each do |word, count| %>
+<h6> A palavra "<%= word %>" foi encontrada <%= pluralize(count, 'vez', 'vezes') %> nos textos analisados.</h6>
+<% end %>
+
+<h6>As 30 palavras com mais ocorrências nos textos</h6>
+<%= column_chart @info['words_count'].token_frequency[0..30],
+                    label: "Quantidade", xtitle: "Palavras", ytitle: "Ocorrências" %>
+<hr>
+<% if @info['text_count_by_acronym'].count > 1 %>
+  <h6> Quantidade de textos encontrados por sigla</h6>
+  <%= pie_chart @info['text_count_by_acronym'].map { |acronym, count| [acronym.upcase, count] } %>
+<% else %>
+  <h6> Todos os textos pertencem à sigla <%= @info['text_count_by_acronym'].flatten[0]%>.</h6>
+<% end %>
+
+<% if @info['text_count_by_class_number'].count > 1 %>
+  <h6> Quantidade de textos encontrados por turma</h6>
+  <%= pie_chart @info['text_count_by_class_number'].map { |class_number, count| ['Turma ' + class_number, count] }.sort_by { |a, b| b }.reverse %>
+<% else %>
+  <h6> Todos os textos são da turma <%= @info['text_count_by_class_number'].flatten[0]%>.</h6>
+<% end %>
+
+<% if @info['text_count_by_region'].count > 1 %>
+  <h6> Quantidade de textos encontrados por pólo</h6>
+  <%= pie_chart @info['text_count_by_region'].map { |region, count| ['Pólo ' + region, count] }.sort_by { |a, b| b }.reverse %>
+<% else %>
+  <h6> Todos os textos são do pólo <%= @info['text_count_by_region'].flatten[0]%>.</h6>
+<% end %>
+
+<% if @info['text_count_by_teacher_number'].count > 1 %>
+  <h6> Quantidade de textos encontrados por número da professora</h6>
+  <%= pie_chart @info['text_count_by_teacher_number'].map { |tn, count| ['Professora ' + tn, count] }.sort_by { |a, b| b }.reverse %>
+<% else %>
+  <h6> Todos os textos possuem o mesmo número da professora, <%= @info['text_count_by_teacher_number'].flatten[0]%>.</h6>
+<% end %>
+
+<% if @info['text_count_by_year'].count > 1 %>
+  <h6> Quantidade de textos encontrados por ano</h6>
+  <%= pie_chart @info['text_count_by_year'].sort_by { |a, b| b }.reverse  %>
+<% else %>
+  <h6> Todos os textos são do ano <%= @info['text_count_by_year'].flatten[0]%>.</h6>
+<% end %>
+
+<hr>
+<% if @info['words_counted_by_class_number'] %>
+ <!-- <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+     <div class="mdl-tabs__tab-bar">
+       <%# @info['words_counted_by_class_number'].each do |wc| %>
+         <a href="#turma-<%#= wc.first %>-panel" class="mdl-tabs__tab">T<%#= wc.first %></a>
+       <%# end %>
+     </div>
+
+     <%# @info['words_counted_by_class_number'].each do |wc| %>
+     <div class="mdl-tabs__panel" id="turma-<%#= wc.first %>-panel">
+       <%#= column_chart wc.last.token_frequency[0..30],
+                         label: "Quantidade",
+                         xtitle: "Palavras", ytitle: "Ocorrências" %>
+     </div> -->
+   <%# end %>
+
+ <!-- <script>
+   $(".mdl-tabs__panel").first().addClass("is-active");
+   $(".mdl-tabs__tab").first().addClass("is-active");
+ </script>
+ </div> -->
+
+   <% @info['words_counted_by_class_number'].each do |cn, words_counted| %>
+     <h6>As 30 Palavras mais encontradas nos textos da turma <%= cn %>:</h6>
+     <%= column_chart words_counted.token_frequency[0..30] %>
+   <% end %>
+<% end %>
+
+<%# if @info['text_info_by_year_and_class_number'].present? %>
+  <%# @info['text_info_by_year_and_class_number'].each_key do |year| %>
+    <%# @info['text_info_by_year_and_class_number'][year].each do |class_number, words_counted| %>
+      <!-- <h6> Quantidade de textos da turma <%#= class_number %> encontrados no ano <%#= year %> </h6> -->
+        <%#= pie
+    <%# end %>
+  <%# end %>
+<%# end %>

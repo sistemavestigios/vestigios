@@ -1,0 +1,29 @@
+<dialog id="dialog_create_color" class="mdl-dialog" align="center">
+  <h5 class="mdl-dialog__title">Crie uma nova cor</h5>
+  <div class="mdl-dialog__content">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+      <input class="mdl-textfield__input" type="text" id="color_tag">
+      <label class="mdl-textfield__label" for="color_tag">Tag:</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+      <input class="mdl-textfield__input" type="text" id="input_hex_color">
+      <!-- <label class="mdl-textfield__label" for="bloc_description">Descrição</label> -->
+    </div>
+
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            onclick="createColor()">
+      Criar
+    </button>
+    <button type="button" class="close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Cancelar
+    </button>
+  </div>
+</dialog>
+
+<script>
+$('#input_hex_color').minicolors({
+  inline: true
+});
+</script>

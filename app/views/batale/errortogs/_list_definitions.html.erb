@@ -1,0 +1,40 @@
+<% if action_name == 'show' && batale_definitions.present? %>
+  <h4>Regras: </h4>
+<% end %>
+<% batale_definitions.each do |batale_definition| %>
+  <div class="card-text-accordion mdl-card mdl-shadow--2dp" >
+    <div class="texts-accordion">
+      <h6 class="accordion"> Regra: <%= batale_definition.rule %> </h6>
+      <div class="accordion">
+        <ul class="demo-list-item mdl-list">
+          <li class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+              Exemplo: <%= batale_definition.example %>
+            </span>
+          </li>
+          <li class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+              Palavra alvo: <%= batale_definition.target_word %>
+            </span>
+          </li>
+          <li class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+              <%= pluralize batale_definition.texts.count, 'texto associado a essa regra', 'textos associados a essa regra' %>
+            </span>
+          </li>
+          <li class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+              <%= pluralize batale_definition.words.count, 'palavra associada a essa regra', 'palavras associdas a essa regra' %>
+            </span>
+          </li>
+        </ul>
+        <div class="mdl-card__actions mdl-card--border">
+          <%= card_action_icons(batale_definition, edit_batale_definition_path(batale_definition), batale_definition) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% if batale_definitions.present? %>
+  <div align='center'><%= paginate batale_definitions, remote: true %></div>
+<% end %>

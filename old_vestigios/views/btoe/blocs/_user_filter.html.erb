@@ -1,0 +1,37 @@
+<div class="paper-material search-card mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px">
+  <div class="mdl-card__title mdl-card--expand">
+    <h5 style="padding: 0px 10px 0px 10px">
+      Filtrar por usuário
+    </h5>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <% @users.each do |user| %>
+      <% if user.blocs? && (!user.private_blocs? || user == current_user) %>
+        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="<%= user.id %>">
+          <% if user == current_user %>
+            <input type="checkbox" id="<%= user.id %>" class="mdl-checkbox__input" checked>
+          <% else %>
+            <input type="checkbox" id="<%= user.id %>" class="mdl-checkbox__input">
+          <% end %>
+          <span class="mdl-checkbox__label"><%= user.full_name %></span>
+        </label>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+$('input').change(function() {
+  if($(this).is(':checked')) {
+    $("div ."+this.id).each(function() {
+      this.setAttribute('style', 'display:block');
+    });
+  } else {
+    $("div ."+this.id).each(function() {
+      this.setAttribute('style', 'display:none');
+    });
+  }
+});
+
+
+</script>

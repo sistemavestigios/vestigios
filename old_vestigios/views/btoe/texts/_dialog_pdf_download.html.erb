@@ -1,0 +1,71 @@
+<dialog id='dwnld-text' class='mdl-dialog' style='width: 60%;'>
+  <h5 class='mdl-dialog__title'>Opções de download</h5>
+  <div class='mdl-dialog__content'>
+    <ul class='mdl-list'>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-header">
+            <input type="checkbox" id="show-header" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Cabeçalho</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-codigo-texto">
+            <input type="checkbox" id="show-codigo-texto" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Código do Texto</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-texto-original">
+            <input type="checkbox" id="show-texto-original" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Texto Original</span>
+          </label>
+        </span>
+      </li>
+      <!-- <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-associated-colors">
+            <input type="checkbox" id="show-associated-colors" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Cores Associadas ao Texto</span>
+          </label>
+        </span>
+      </li>
+      <li class='mdl-list__item'>
+        <span class='mdl-list__item-primary-content'>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-associated-blocs">
+            <input type="checkbox" id="show-associated-blocs" class="mdl-checkbox__input">
+            <span class="mdl-checkbox__label">Mostrar Blocos Associados ao Texto</span>
+          </label>
+        </span>
+      </li> -->
+    </ul>
+  </div>
+  <div class='mdl-dialog__actions'>
+    <button type='button' id='dwnld-pdf' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' disabled>
+      Download
+    </button>
+    <button type='button' class='close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' onclick="fechar_dialog('dwnld-text')">
+      Cancelar
+    </button>
+  </div>
+</dialog>
+
+<script>
+$("#show-texto-original")[0].addEventListener('change', show_bttn_dwnld);
+// $("#show-associated-colors")[0].addEventListener('change', show_bttn_dwnld);
+// $("#show-associated-blocs")[0].addEventListener('change', show_bttn_dwnld);
+
+function show_bttn_dwnld() {
+  // TODO: Pegar feedback e terminar
+  // if($("#show-texto-original")[0].checked || $("#show-associated-colors")[0].checked || $("#show-associated-blocs")[0].checked) {
+  if($("#show-texto-original")[0].checked) {
+    $("#dwnld-pdf")[0].removeAttribute('disabled');
+  } else {
+    $("#dwnld-pdf")[0].setAttribute('disabled', true);
+  }
+}
+</script>

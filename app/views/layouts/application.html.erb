@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vestígios</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <%= render 'layouts/header' %>
+      <%= render 'layouts/drawer' %>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <%= yield %>
+          <%= render 'layouts/messages' %>
+        </div>
+      </main>
+      <%#= render 'layouts/footer' %>
+    </div>
+  </body>
+</html>

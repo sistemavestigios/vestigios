@@ -1,0 +1,18 @@
+<% if action_name == 'show' && batale_errortogs.present? %>
+  <h4>Subcategorias: </h4>
+<% end %>
+<% batale_errortogs.each do |batale_errortog| %>
+<div class="card-text-accordion mdl-card mdl-shadow--2dp" >
+  <div class="texts-accordeon">
+    <h6 class="accordion">
+      <%= batale_errortog.name %>
+    </h6>
+    <div class="accordion" >
+      <%= render 'errortog', children: batale_errortog.child_errortogs %>
+      <div class="mdl-card__actions mdl-card--border">
+        <%= card_action_icons(batale_errortog, edit_batale_errortog_path(batale_errortog), batale_errortog) %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

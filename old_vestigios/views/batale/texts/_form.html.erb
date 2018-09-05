@@ -1,0 +1,100 @@
+<%= form_for(batale_text) do |f| %>
+  <%= render 'shared/errors', obj: batale_text %>
+
+  <div class="paper-material mdl-card mdl-shadow--2dp" style="padding: 10px 24px 10px 24px" >
+    <div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :nome_aluno, class: "mdl-textfield__label", for: "input_nome_aluno"%>
+        <%= f.text_field :nome_aluno, class: "mdl-textfield__input", id: "input_nome_aluno"%>
+      </div>
+      <br>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :escola_crianca, class: "mdl-textfield__label", for: "input_escola_crianca" %>
+        <%= f.text_field :escola_crianca, class: "mdl-textfield__input", id: "input_escola_crianca" %>
+      </div>
+      <br>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :texto_original, class: "mdl-textfield__label",  for: "input_texto_original" %>
+        <%= f.text_area :texto_original, class: "mdl-textfield__input", rows: "4", id: "input_texto_original" %>
+      </div>
+      <br>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label full_size">
+        <%= f.label :texto_normatizado, class: "mdl-textfield__label",  for: "input_texto_normatizado" %>
+        <%= f.text_area :texto_normatizado, class: "mdl-textfield__input", rows: "4", id: "input_texto_normatizado" %>
+      </div>
+      <br>
+    </div>
+
+    <div>
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label small_size">
+        <%= f.label :idade, class: "mdl-textfield__label", for: "input_idade" %>
+        <%= f.text_field :idade, class: "mdl-textfield__input", id: "input_idade" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label small_size">
+        <%= f.label :sexo, class: "mdl-textfield__label", for: "input_sexo" %>
+        <%= f.text_field :sexo, class: "mdl-textfield__input", id: "input_sexo" %>
+      </div>
+
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <%= f.label :numero_aluno, class: "mdl-textfield__label", for: "input_numero_aluno"%>
+        <%= f.text_field :numero_aluno, class: "mdl-textfield__input", id: "input_numero_aluno"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :numero_estrato, class: "mdl-textfield__label", for: "input_numero_estrato" %>
+        <%= f.number_field :numero_estrato, class: "mdl-textfield__input", id: "input_numero_estrato" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :numero_coleta, class: "mdl-textfield__label", for: "input_numero_coleta"%>
+        <%= f.number_field :numero_coleta, class: "mdl-textfield__input", id: "input_numero_coleta"%>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :numero_texto, class: "mdl-textfield__label", for: "input_numero_texto" %>
+        <%= f.number_field :numero_texto, class: "mdl-textfield__input", id: "input_numero_texto" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :ano_coleta, class: "mdl-textfield__label", for: "input_ano_coleta" %>
+        <%= f.number_field :ano_coleta, class: "mdl-textfield__input", id: "input_ano_coleta" %>
+      </div>
+    </div>
+    <br>
+
+
+
+    <div style= "">
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :tipo_texto, class: "mdl-textfield__label", for: "input_tipo_texto" %>
+        <%= f.text_field :tipo_texto, class: "mdl-textfield__input", id: "input_tipo_texto" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :serie, class: "mdl-textfield__label", for: "input_serie" %>
+        <%= f.text_field :serie, class: "mdl-textfield__input", id: "input_serie" %>
+      </div>
+
+      <div class="field mdl-textfield mdl-js-textfield mdl-textfield--floating-label medium_size">
+        <%= f.label :turma, class: "mdl-textfield__label", for: "input_turma" %>
+        <%= f.text_field :turma, class: "mdl-textfield__input", id: "input_turma" %>
+      </div>
+
+      <br>
+      &nbsp;&nbsp;<%= f.file_field :image, id: "input_image" %>
+    </div>
+
+    <div class="mdl-card__actions mdl-card--border" style="padding: 10px 0 0 0 ">
+      <%= link_to 'Voltar', 'javascript:history.go(-1);',
+        class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+
+      <%= f.submit "Salvar",
+        class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+    </div>
+</div>
+<% end %>

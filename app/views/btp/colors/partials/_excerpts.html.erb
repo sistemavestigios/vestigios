@@ -1,0 +1,27 @@
+<ul>
+  <% @btp_color.excerpts.each_with_index do |e,index| %>
+    <li>
+      <p><strong>Trecho vindo de <%= @btp_texts[index].codigo_texto%>: </strong><%= e.trecho %></p>
+      <%= link_to "Texto Original", btp_text_path(e.text_id) %>
+      <%= link_to "Excluir trecho",
+                deleteColorExcerpt_path,
+                remote: true,
+                method: :delete,
+                data: { params: { color_id: @btp_color.id.to_s, excerpt_id: e.id.to_s }, confirm: 'Tem certeza?' } %>
+      <%= link_to "Adicionar comentário", "javascript:comment_excerpt('#{e.id}')" %>
+      <% if e.comments? %>
+        <ul style="margin: 0px;">
+          <% e.comments.each do |comment| %>
+            <li>
+              <p>
+                &emsp;<strong>Comentário de <%= comment.user.full_name %>: </strong>
+                <%= raw"<span id=comment-#{comment.id}> #{comment.comment}</span>" %>
+                <%= comment_icons comment, comment.id %>
+              </p>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

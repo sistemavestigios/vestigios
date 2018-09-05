@@ -1,0 +1,27 @@
+<%= render 'shared/error_messages', obj: @batale_definition%>
+<div class='paper-material mdl-card mdl-shadow--2dp'>
+  <div class='mdl-card__title'>
+    <h2 class='mdl-card__title-text'>Novo Erro</h2>
+  </div>
+  <%= form_with(model: @batale_definition, url: batale_errortog_definitions_path(@batale_errortog), local: true) do |form| %>
+    <div class='mdl-card__supporting-text'>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= form.label :example, class: 'mdl-textfield__label' %>
+        <%= form.text_field :example, class: 'mdl-textfield__input' %>
+      </div>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= form.label :target_word, class: 'mdl-textfield__label' %>
+        <%= form.text_field :target_word, class: 'mdl-textfield__input' %>
+      </div>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <%= form.label :rule, class: 'mdl-textfield__label' %>
+        <%= form.text_field :rule, class: 'mdl-textfield__input' %>
+      </div>
+    </div>
+    <div class='mdl-card__actions mdl-card--border'>
+      <%= form.submit class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= link_to t('links.back'), request.referer ||  batale_errortog_path(batale_definition.errortog),
+          class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    </div>
+  <% end %>
+</div>

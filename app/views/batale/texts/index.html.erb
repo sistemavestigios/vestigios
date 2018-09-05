@@ -1,0 +1,9 @@
+<%= render 'search_texts' %>
+<div id="strata">
+  <%= render 'list_card_strata' if @batale_texts.empty? %>
+</div>
+<div id="pagination-items">
+  <%= render 'list_texts' unless @batale_texts.empty? %>
+</div>
+<%= link_to t('links.new', model: @batale_texts.klass.model_name.human), new_batale_text_path,
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent bottom-right" %>

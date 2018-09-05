@@ -1,0 +1,23 @@
+
+<dialog id="pdf_config" class="mdl-dialog" style="width: 60%;">
+  <div id="download_dialog" class="mdl-grid">
+  </div>
+
+  <div class="mdl-dialog__actions" style="padding: 2px 0 2px 0">
+
+    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+      style="margin: 0 10px 0 0 "
+      onclick="download_errortog_pdf()">
+        Download
+    </button>
+    <button type="button" class="close mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            style="margin: 0 10px 0 0" onclick="fechar_dialog('pdf_config')">
+      Cancelar
+    </button>
+  </div>
+
+</dialog>
+
+<script>
+  register_show_dialog_event('pdf_config', 'pdf-bttn');
+</script>

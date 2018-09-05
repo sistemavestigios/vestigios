@@ -1,0 +1,19 @@
+<div class='paper-material mdl-card mdl-shadow--2dp'>
+  <div class='card-text-title mdl-card__title'>
+    <h2 class='mdl-card__title-text'>Texto Normatizado:</h2>
+  </div>
+  <div class='card-text-full-text mdl-card__supporting-text' contenteditable="true">
+    <%= batale_text.normalized %>
+  </div>
+  <div class='mdl-card__actions mdl-card--border'>
+    <button class=' mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect'
+            id='edit_texto_normatizado_bttn'
+            onclick='toggle_edit_texto_normatizado();'>
+      Editar
+    </button>
+    <button style='display: none;'class=' mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect'
+            id='save_texto_normatizado_bttn' onclick='updateTextoNormatizado();'>
+      Salvar
+    </button>
+  </div>
+</div>

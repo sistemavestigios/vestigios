@@ -1,0 +1,13 @@
+<%= render 'search_definitions' %>
+<div id="errortogs">
+  <%= render 'list_errortogs' %>
+</div>
+<div id="batale_definitions">
+</div>
+<%= link_to 'Nova Categoria', new_batale_errortog_path, class: "button_margin mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent",
+                                                   style: "position: absolute; right: 0; margin: 0% 5% 5% 0%;",
+                                                   id: "new-category-bttn"%>
+
+<button id="pdf-bttn" class="button_margin mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                      style="position: absolute; right: 0; margin: 0% 5% 5% 0%; display: none">Opções PDF</button>
+<%= render 'dialog_pdf_config' %>

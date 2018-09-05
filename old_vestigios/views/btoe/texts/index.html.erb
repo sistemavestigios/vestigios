@@ -1,0 +1,13 @@
+<div>
+  <%= render partial: "btoe/texts/search_texts" %>
+</div>
+
+<div id="pagination-itens">
+  <%= render "btoe/texts/list_card_siglas" %>
+</div>
+
+<%= link_to 'Novo Texto', new_btoe_text_path,
+              class: "button_margin mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent",
+              style: "position: absolute; right: 0; margin: 0% 5% 5% 0%;" %>
+
+<%= render "btoe/texts/dialog_pdf_download" %>

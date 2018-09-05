@@ -1,0 +1,80 @@
+<%= form_tag batale_definition_path(@batale_definition), remote: true, method: :get, id: 'search-form' do %>
+  <div class="paper-material mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text"> Regra: <%= @batale_definition.rule %> </h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <p>
+        <b>Exemplo:</b> <%= @batale_definition.example %>
+        <b>Palavra alvo:</b> <%= @batale_definition.target_word %>
+      </p>
+      <%= pluralize @batale_definition.texts.count, 'texto associado a essa definição de erro', 'textos associados a essa definição de erro' %>
+      <div id="text-info"></div>
+      <p>
+        Quantidade de textos por página: <%= select_tag "per_page", options_for_select([5,10,15,20,25], params[:per_page].to_i) %>
+      </p>
+      <div id='advanced_search'class='accordion'>
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_number, Batale::Text.human_attribute_name(:student_number) %>
+            <%= select_tag :student_number, options_for_select(@batale_definition.options(:student_number)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_age, Batale::Text.human_attribute_name(:student_age) %>
+            <%= select_tag :student_age, options_for_select(@batale_definition.options(:student_age)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_sex, Batale::Text.human_attribute_name(:student_sex) %>
+            <%= select_tag :student_sex, options_for_select(@batale_definition.options(:student_sex)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :stratum_number, Batale::Text.human_attribute_name(:stratum_number) %>
+            <%= select_tag :stratum_number, options_for_select(@batale_definition.options(:stratum_number)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :collection_number, Batale::Text.human_attribute_name(:collection_number) %>
+            <%= select_tag :collection_number, options_for_select(@batale_definition.options(:collection_number)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_text_number, Batale::Text.human_attribute_name(:student_text_number) %>
+            <%= select_tag :student_text_number, options_for_select(@batale_definition.options(:student_text_number)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :collection_year, Batale::Text.human_attribute_name(:collection_year) %>
+            <%= select_tag :collection_year, options_for_select(@batale_definition.options(:collection_year)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :type, Batale::Text.human_attribute_name(:type) %>
+            <%= select_tag :type, options_for_select(@batale_definition.options(:type)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_school, Batale::Text.human_attribute_name(:student_school) %>
+            <%= select_tag :student_school, options_for_select(@batale_definition.options(:student_school)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_grade, Batale::Text.human_attribute_name(:student_grade) %>
+            <%= select_tag :student_grade, options_for_select(@batale_definition.options(:student_grade)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :student_class, Batale::Text.human_attribute_name(:student_class) %>
+            <%= select_tag :student_class, options_for_select(@batale_definition.options(:student_class)), { multiple: true } %>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col">
+            <%= label_tag :writing_type, Batale::Text.human_attribute_name(:writing_type) %>
+            <%= select_tag :writing_type, options_for_select(@batale_definition.options(:writing_type)), { multiple: true } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='mdl-card__actions mdl-card--border'>
+      <%= button_tag 'Buscar', class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= button_tag 'Busca Avançada', class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+            id: 'button_expand_search', onclick: 'expandSearch()', type: 'button' %>
+      <%= button_tag 'Limpar Busca', class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+            onclick: 'clearFields()', type: 'button' %>
+      <button type='button' class='mdl-button mdl-js-button mdl-button--icon' id='dwnld-tn-pdf' disabled>
+        <i class='material-icons'>picture_as_pdf</i>
+      </button>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,282 @@
+<%= render partial: "shared/next_and_previous_buttons" %>
+
+<%= render 'original_text', btoe_text: @btoe_text %>
+
+<%#= image_tag(@btoe_text.image.url, size: '300x300') if @btoe_text.image? %>
+
+<div class="mdl-grid two_almost_aligned_cards">
+  <div class="mdl-cell mdl-cell--6-col">
+    <%= render "btoe/texts/selected_excerpt" %>
+  </div>
+  <div class="mdl-cell mdl-cell--6-col">
+    <%= render "btoe/texts/associated_colors" %>
+  </div>
+</div>
+
+<div class="mdl-grid two_almost_aligned_cards">
+
+  <% if @associated_blocs.size > 0 %>
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-card mdl-shadow--2dp cards_show_btoe_text">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">
+            Blocos relacionados com o texto
+          </h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <ul style="margin:0px;">
+          <% @associated_blocs.each do |bloc| %>
+            <li style="font-size: 14px">
+                <p><strong>Bloco:</strong> <%= bloc.nome %></p>
+                <p><strong>Descrição:</strong> <%= bloc.descricao %></p>
+                <p><strong><%= link_to "Ir para lá", btoe_bloc_path(bloc), style: "color: rgba(0,0,0,0.54);" %></strong>
+            </li>
+          <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-card mdl-shadow--2dp cards_show_btoe_text">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">
+            Contagem de palavras do texto
+          </h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <%= column_chart @dados  %>
+        </div>
+      </div>
+    </div>
+  <% elsif @dados %>
+    <div class="mdl-card mdl-shadow--2dp cards_show_btoe_text">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">
+          Contagem de palavras do texto
+        </h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <%= column_chart @dados  %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+
+
+<%= render "dialog_add_to_bloc" %>
+<%= render "dialog_create_bloc" %>
+<%= render "dialog_create_color" %>
+<%= render "dialog_associate_color" %>
+
+<script>
+var showing_associations_of = "user";
+
+register_show_dialog_event("dialog_create_bloc", "open_create_bloc_dialog");
+register_show_dialog_event("dialog_add_to_bloc", "open_add_to_bloc_dialog");
+register_show_dialog_event("dialog_create_color", "open_create_color_dialog");
+register_show_dialog_event("dialog_associate_color", "open_associate_color_dialog");
+
+function clearAllMarkedColors() {
+  $("span[class*='color_']").each(function(){
+    $(this).css("background-color", "");
+    $(this).css("color", "black");
+    $(this).css("opacity", "0.541176");
+  });
+}
+function showMarkedColor(color){
+  $(".color_"+color).each(function() {
+    if($(this).css("background-color") == hexToRgb("#"+color)){
+      $(this).css("background-color", "");
+      //$(this).css("color", "rbga(0, 0, 0, 0.541176)");
+      $(this).css("color", "black");
+      $(this).css("opacity", "0.541176");
+      console.log($(this).css("color"));
+    }
+    else {
+      $(this).css("background-color", "#"+color);
+      $(this).css("opacity", "1");
+      $(this).css("color", textColor(color));
+    }
+  });
+}
+
+//function hexToRgbA(hex){
+// http://stackoverflow.com/questions/12124451/jquery-if-background-color
+function hexToRgb(hex){
+    var c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c = hex.substring(1).split('');
+        if(c.length== 3){
+            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+        //return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
+        return 'rgb('+[(c>>16)&255, (c>>8)&255, c&255].join(', ')+')';
+    }
+    throw new Error('Bad Hex');
+}
+
+//http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+function textColor(color) {
+  //var c = c.substring(1);      // strip #
+  //color ja vem sem o #
+  var rgb = parseInt(color, 16);   // convert rrggbb to decimal
+  var r = (rgb >> 16) & 0xff;  // extract red
+  var g = (rgb >>  8) & 0xff;  // extract green
+  var b = (rgb >>  0) & 0xff;  // extract blue
+
+  var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+  if (luma > 131) {
+      return "#000";
+  }
+  else {
+    return "#fff";
+  }
+}
+
+function getSelectionText() {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+
+    if(text != ""){
+      $("#selected-text p").text("Trechos a serem adicionados");
+      $("#selected-text ul").append(
+        "<li class=\"mdl-list__item\">"+
+        "<span class=\"mdl-list__item-primary-content\">"+text+"</span>"+
+        "<span class=\"mdl-list__item-secondary-action\">"+
+          "<button class=\"mdl-button mdl-js-button mdl-button--icon mdl-button--colored\">"+
+            "<i class=\"material-icons\">cancel</i>"+
+          "</button></span></li>");
+      notification = document.querySelector('.mdl-snackbar');
+      data = { message: "Trecho selecionado", timeout: 1500};
+      notification.MaterialSnackbar.showSnackbar(data);
+    }
+    else {
+      $("#selected-text p").html("Selecione o trecho no texto acima e clique em \"Enviar Seleção\"");
+      notification = document.querySelector('.mdl-snackbar');
+      data = { message: "Trecho inválido. Selecione algum trecho", timeout: 3000};
+      notification.MaterialSnackbar.showSnackbar(data);
+    }
+    return text;
+}
+
+//function deletaTrechoSelecionado()
+$("#selected-text ul").click(function(event){
+  //quando clica na lista de trechos selecionados
+  if($(event.target).is('i.material-icons')) {
+    //e o alvo foi o botão de deletar
+    // i.material-icons -> button -> span -> li
+    event.target.parentNode.parentNode.parentNode.replaceWith("");
+    //pega o li que ele está contido e o deleta
+    //se não sobrou nenhum trecho, coloca o placeholder de novo
+    if($("#selected-text ul").children().size() == 0 ){
+      $("#selected-text p").html("Selecione o trecho no texto acima e clique em \"Enviar Seleção\"");
+    }
+  }
+});
+
+function saveToBloc(btoe_bloc) {
+  console.log(btoe_bloc);
+  var trechos = [];
+  //pega o conteudo do ul, os li
+  $("#selected-text ul").children().each(function(){
+    //e adiciona a trechos o conteudo do primeiro filho do li (um span o trecho de fato)
+     trechos.push($(this).children()[0].innerHTML.trim());
+  });
+
+  if (trechos == [] || trechos.length == 0) {
+    var notification = document.querySelector('.mdl-snackbar');
+    var data = {message: "Não há nenhum trecho selecionado", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+    console.log("trecho inválido");
+  }
+  else {
+    ajax({
+        type: 'POST',
+        url: "/saveToBtoeBloc",
+        data: { btoe_bloc: btoe_bloc, trechos: trechos, text_id: "<%= @btoe_text.id %>" },
+        success: "Trechos adicionados com sucesso",
+        error: "Erro ao salvar no bloco."
+      });
+  }
+}
+
+function createBloc() {
+  name = $('#bloc_name')[0].value;
+  desc = $('#bloc_description')[0].value;
+  privado = $('#bloc_private')[0].checked;
+
+  if (name != "") {
+    ajax({
+      type:'POST',
+      url:'/createBtoeBloc',
+      data: { name, desc, privado },
+      success: "Novo bloco criado com sucesso",
+      error: "Falha ao criar novo bloco."
+    });
+  }
+  else {
+    console.log("nome do bloco vazio");
+    var notification = document.querySelector('.mdl-snackbar');
+    var data = {message: "O nome do bloco não pode estar vazio.", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+  }
+}
+
+function createColor(){
+  //color_tag, input_hex_color
+  tag = $('#color_tag')[0].value
+  hex_color = $('#input_hex_color')[0].value
+
+  if (tag != "") {
+    ajax({
+      type: 'POST',
+      url: '/createBtoeColor',
+      data: { tag, hex_color },
+      success: 'Cor criada com sucesso',
+      error: 'Falha ao criar nova cor'
+    });
+  }
+  else {
+    var notification = document.querySelector('.mdl-snackbar');
+    var data = {message: "Tag não pode estar vazia.", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+    console.log("tag da cor vazia");
+  }
+}
+
+function associateColor(color_id) {
+  console.log("color: ", color_id)
+  var trechos = [];
+  //pega o conteudo do ul, os li
+  $("#selected-text ul").children().each(function(){
+    //e adiciona a trechos o conteudo do primeiro filho do li (um span o trecho de fato)
+     trechos.push($(this).children()[0].innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim());
+  });
+
+  if(trechos == [] || trechos.length == 0){
+    notification = document.querySelector('.mdl-snackbar');
+    data = {message: "Não há nenhum trecho selecionado", timeout: 3000};
+    notification.MaterialSnackbar.showSnackbar(data);
+    console.log("problema com o trecho selecionado");
+  }
+  else{
+    texto_id = "<%= @btoe_text.id %>";
+    ajax({
+      type: 'POST',
+      url: '/associateColor',
+      data: {trechos, color_id, texto_id, create_bloc: $("#checkbox-also-create-bloc").is(":checked")},
+      success: 'Trechos associados a cor com sucesso',
+      error: 'Falha ao associar trechos à cor'
+    });
+  }
+
+}
+</script>

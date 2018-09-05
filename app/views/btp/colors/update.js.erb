@@ -1,0 +1,11 @@
+<% if @btp_color.update(params.require(:btp_color).permit(excerpts_attributes: Btp::Excerpt.permitted_attributes)) %>
+  var dialog_associate_color = $('#dialog_associate_color')[0];
+  dialog_associate_color.close();
+  message = "<%= t('success.update', model: Btp::Color.model_name.human) %>";
+  showSnackBar(message);
+  newColorChip = "<%= escape_javascript render 'btp/texts/color_chip', color: @btp_color %>";
+  $(newColorChip).appendTo('#colors-card');
+<% else %>
+  message = "<%= @btp_color.errors.full_messages.join('; ') %>"
+  showSnackBar(message);
+<% end %>

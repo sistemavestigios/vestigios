@@ -1,0 +1,29 @@
+---
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/atlas
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+      - image: mongo:3.4.4
+    steps:
+      - checkout
+
+      - type: cache-restore
+        name: Restore bundle cache
+        key: atlas-{{ checksum "Gemfile.lock" }}
+
+      - run: bundle install --path vendor/bundle
+
+      - type: cache-save
+        name: Store bundle cache
+        key: atlas-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run: dockerize -wait tcp://localhost:27017 -timeout 1m
+
+      - run: bin/setup
+
+      - run: bin/rails spec

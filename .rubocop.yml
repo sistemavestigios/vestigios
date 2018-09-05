@@ -1,0 +1,63 @@
+AllCops:
+  Exclude:
+    - bin/*
+    - config/routes.rb
+    - db/**/*
+    - lib/tasks/*.rake
+    - log/**/*
+    - script/*
+    - vendor/**/*
+    - app/models/batale/text.rb
+    - app/controllers/*/analyses_controller.rb
+    - old_vestigios/**/*
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/BlockLength:
+  Exclude:
+    - config/environments/*
+    - spec/**/*
+    - /**/concerns/*
+
+Metrics/LineLength:
+  Max: 140
+  Exclude:
+    - config/**/*
+    - spec/**/*
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - spec/**/*
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Exclude:
+    - app/controllers/**/*
+
+Lint/RescueException:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec/**/*
